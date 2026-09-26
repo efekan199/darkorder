@@ -1,61 +1,121 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <darkorder.com</title>
+    <title>Dark Order - Kontrol Paneli</title>
     <style>
         body {
-            background-color: #0f0f0f;
-            color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             margin: 0;
+            padding: 20px;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
         }
-        .card {
-            background: #1a1a1a;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            text-align: center;
-            width: 320px;
-        }
-        h1 { margin-bottom: 10px; font-size: 24px; }
-        p { color: #888; font-size: 14px; margin-bottom: 30px; }
-        .btn {
-            display: block;
+        .container {
             width: 100%;
-            padding: 12px 0;
-            margin: 12px 0;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            color: white;
-            transition: 0.2s;
+            max-width: 700px;
+            background-color: #1e1e1e;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border: 1px solid #333;
         }
-        .discord { background-color: #5865F2; }
-        .discord:hover { background-color: #4752C4; }
-        .tiktok { background-color: #000000; border: 1px solid #333; }
-        .tiktok:hover { background-color: #222; }
+        h1 {
+            color: #fff;
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 15px;
+        }
+        h2 {
+            color: #5865F2;
+            font-size: 18px;
+            margin-top: 25px;
+        }
+        p {
+            line-height: 1.6;
+            color: #ccc;
+            font-size: 14px;
+        }
+        .box {
+            background-color: #2b2d31;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #5865F2;
+        }
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .tool-item {
+            background-color: #25262b;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #ddd;
+            border: 1px solid #3a3b40;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            background-color: #5865F2;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .back-btn:hover {
+            background-color: #4752c4;
+        }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>Bağlantılarım</h1>
-        <p>Sosyal medya hesaplarıma buradan ulaşabilirsiniz.</p>
+    <div class="container">
+        <h1>Dark Order - Kontrol Paneli & Bilgi</h1>
 
-        <a href="https://discord.gg/QF6Xvc2a3" target="_blank" class="btn discord">
-            Discord Sunucuma Katıl
-        </a>
+        <div class="box">
+            <h2>Sunucu Hakkında</h2>
+            <p>Sunucumuz kesinlikle sanala ve Discord'a yeni başlamış kişiler içindir. Burada sanalı öğretme konuları çok abartı değildir; burada tanışır ve keyifli vakitler geçiririz. Sizler için birkaç şey ekledik. Eğer büyümek istiyorsanız elbet vakti gelecektir... Sunucuya kişi çekmeniz bizi mutlu eder.</p>
+        </div>
 
-        <a href="https://www.tiktok.com/@gg.darkorder?_r=1&_d=f5k7cmh5cc8b16&sec_uid=MS4wLjABAAAAtD1uTJPDTIb0fBxDGaPT6kvbYC6ro82jgzB1mCaJIy6OE6LPDYBPr4uusMV6J0l8&share_author_id=7684662950746145808&sharer_language=tr&source=h5_m&u_code=f5f6213m29682i&timestamp=1790452564&user_id=7684662950746145808&sec_user_id=MS4wLjABAAAAtD1uTJPDTIb0fBxDGaPT6kvbYC6ro82jgzB1mCaJIy6OE6LPDYBPr4uusMV6J0l8&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7689489369836554002&share_link_id=b3c59e7a-efb2-42bd-a20f-abbf91062e93&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb0229&social_share_type=5&enable_checksum=1" target="_blank" class="btn tiktok">
-            TikTok'ta Takip Et
-        </a>
+        <div class="box">
+            <h2>Kurallar</h2>
+            <p>Sunucuda <strong>ADK, MDK, DDK serbesttir</strong>. Şimdiden iyi eğlenceler!</p>
+        </div>
+
+        <div class="box">
+            <h2>Sunucu Konuları ve Araçlar</h2>
+            <div class="tools-grid">
+                <div class="tool-item">📁 4d-soyad-sorgu</div>
+                <div class="tool-item">🤖 oto-tg-katilma</div>
+                <div class="tool-item">🌐 ilbar-at</div>
+                <div class="tool-item">🛡️ goodbyedpi-kurma</div>
+                <div class="tool-item">📧 t3mp-mail</div>
+                <div class="tool-item">📸 ısta-takipçi</div>
+                <div class="tool-item">🚀 s4nucu-sp7m</div>
+                <div class="tool-item">🔍 sherlock</div>
+                <div class="tool-item">💻 browse-stealer 😁</div>
+                <div class="tool-item">💥 sms-bomber</div>
+                <div class="tool-item">🆔 id-sorgu</div>
+            </div>
+        </div>
+
+        <p style="text-align: right; margin-top: 20px; font-weight: bold; color: #fff;">
+            Saygılarımla, HZ. C L A W
+        </p>
+
+        <a href="index.html" class="back-btn">← Ana Sayfaya Dön</a>
     </div>
 
 </body>
