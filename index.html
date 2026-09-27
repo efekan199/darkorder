@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dark Order - Giriş</title>
-<!-- Firebase Auth SDK -->
+<title>Dark Order - Kontrol Paneli</title>
+<!-- Firebase SDK (Auth ve Realtime Database) -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <style>
 * { box-sizing: border-box; }
 body {
@@ -193,7 +194,7 @@ body {
     text-decoration: underline;
 }
 
-#auth-status {
+#auth-status, #reg-status {
     font-size: 12px;
     text-align: center;
     margin-top: 15px;
@@ -207,7 +208,7 @@ body {
     align-items: center;
     width: 100%;
     max-width: 500px;
-    padding: 20px;
+    padding: 20px 10px;
 }
 
 .top-bar {
@@ -246,7 +247,7 @@ body {
     background: rgba(18, 24, 38, 0.85);
     backdrop-filter: blur(10px);
     border-radius: 16px;
-    padding: 25px;
+    padding: 20px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 15px 35px rgba(0,0,0,0.6);
     margin-top: 20px;
@@ -262,6 +263,99 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 .btn { display: block; width: 100%; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; text-align: center; color: #fff; background: #3b82f6; }
 .btn.tiktok { background: #fe2857; }
 .btn:hover { opacity: 0.9; }
+
+/* Genel Sohbet Alanı Tasarımı */
+.chat-box-container {
+    background: #161f30;
+    border: 1px solid #23314a;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 15px;
+}
+
+.chat-messages {
+    height: 220px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 5px;
+    margin-bottom: 10px;
+}
+
+.chat-message {
+    background: #101622;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    border: 1px solid #23314a;
+    word-break: break-all;
+    color: #e0e0e0;
+}
+
+.chat-message.system-msg {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: #3b82f6;
+    color: #60a5fa;
+    text-align: center;
+    font-weight: 600;
+}
+
+.chat-message img, .chat-message video {
+    max-width: 100%;
+    border-radius: 6px;
+    margin-top: 6px;
+    display: block;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.chat-input-area input[type="text"] {
+    flex: 1;
+    background: #101622;
+    border: 1px solid #23314a;
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: #fff;
+    font-size: 12px;
+    outline: none;
+}
+
+/* Galeri Butonu Tasarımı */
+.gallery-btn-label {
+    background: #23314a;
+    color: #fff;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+.gallery-btn-label:hover {
+    background: #3b82f6;
+}
+.gallery-btn-label input {
+    display: none;
+}
+
+.chat-input-area button.send-btn {
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+}
+.chat-input-area button.send-btn:hover { background: #059669; }
 </style>
 </head>
 <body>
@@ -314,7 +408,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
             <p id="auth-status"></p>
         </div>
 
-        <!-- KAYIT OL FORMU (Başlangıçta Gizli) -->
+        <!-- KAYIT OL FORMU -->
         <div class="form-box" id="registerFormSection" style="display: none;">
             <h2>Kayıt Ol</h2>
             
@@ -378,6 +472,24 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
                 <div class="tool">🆔 id-sorgu</div>
             </div>
         </div>
+
+        <!-- GENEL SOHBET ODA KISMI -->
+        <div class="box">
+            <h2>Global Sohbet Odası</h2>
+            <div class="chat-box-container">
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-area">
+                    <!-- Galeri / Medya Seçme Butonu -->
+                    <label class="gallery-btn-label" title="Fotoğraf veya Video Seç">
+                        🖼️
+                        <input type="file" id="mediaInput" accept="image/*,video/*" onchange="sendMediaFile(event)">
+                    </label>
+                    <input type="text" id="chatInput" placeholder="Mesaj yaz..." onkeypress="checkEnter(event)">
+                    <button class="send-btn" onclick="sendMessage()">Gönder</button>
+                </div>
+            </div>
+        </div>
+
         <div class="btn-group">
             <a href="https://discord.gg/xMxtVGewJE" class="btn" target="_blank">Discord'a Katıl</a>
             <a href="https://www.tiktok.com/@gg.darkorder?_r=1&_t=ZS-9A54uScfLk5" class="btn tiktok" target="_blank">TikTok'a Katıl</a>
@@ -402,8 +514,8 @@ try {
 } catch (e) {}
 
 const auth = firebase.auth();
+const db = firebase.database();
 
-// Oturumun sekme kapandığında sıfırlanması için oturum modu
 auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {});
 
 function togglePassword(fieldId) {
@@ -425,6 +537,8 @@ function showLoginForm() {
     document.getElementById('loginFormSection').style.display = 'block';
 }
 
+let welcomeLogged = false;
+
 auth.onAuthStateChanged((user) => {
     let authWrapper = document.getElementById('authWrapper');
     let mainContent = document.getElementById('mainContent');
@@ -432,12 +546,23 @@ auth.onAuthStateChanged((user) => {
     if (user) {
         authWrapper.style.display = 'none';
         mainContent.style.display = 'flex';
-        // Kullanıcının varsa profil adını, yoksa e-postasını gösterelim
-        let displayName = user.displayName ? user.displayName : user.email;
+        let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
         document.getElementById('welcomeUser').innerText = "👤 " + displayName;
+
+        if (!welcomeLogged) {
+            welcomeLogged = true;
+            db.ref('chat').push({
+                user: "Sistem",
+                text: `Hoş geldin ${displayName}!`,
+                type: "system"
+            });
+        }
+        
+        loadChatMessages();
     } else {
         authWrapper.style.display = 'flex';
         mainContent.style.display = 'none';
+        welcomeLogged = false;
     }
 });
 
@@ -488,7 +613,6 @@ function registerUser() {
 
     auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            // Kullanıcı adını Firebase profilimize kaydedelim
             return userCredential.user.updateProfile({
                 displayName: username
             });
@@ -526,6 +650,81 @@ function forgotPassword() {
 
 function logoutUser() {
     auth.signOut();
+}
+
+function sendMessage() {
+    let input = document.getElementById('chatInput');
+    let text = input.value.trim();
+    let user = auth.currentUser;
+    
+    if (!text || !user) return;
+    
+    let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
+
+    db.ref('chat').push({
+        user: displayName,
+        text: text,
+        type: "text"
+    });
+
+    input.value = "";
+}
+
+function checkEnter(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+}
+
+// Dosya Seçilince Çalışacak Fonksiyon (Galeri Butonu)
+function sendMediaFile(event) {
+    let file = event.target.files[0];
+    let user = auth.currentUser;
+    if (!file || !user) return;
+
+    let reader = new FileReader();
+    reader.onload = function(e) {
+        let fileDataUrl = e.target.result;
+        let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
+        let fileType = file.type.startsWith('video') ? 'video' : 'image';
+
+        db.ref('chat').push({
+            user: displayName,
+            mediaUrl: fileDataUrl,
+            type: fileType
+        });
+    };
+    reader.readAsDataURL(file);
+    event.target.value = ""; // Sıfırla ki aynı dosya tekrar seçilebilsin
+}
+
+function loadChatMessages() {
+    let chatMessages = document.getElementById('chatMessages');
+    
+    db.ref('chat').limitToLast(30).on('value', (snapshot) => {
+        chatMessages.innerHTML = "";
+        snapshot.forEach((childSnapshot) => {
+            let data = childSnapshot.val();
+            let msgDiv = document.createElement('div');
+            
+            if (data.type === "system") {
+                msgDiv.className = "chat-message system-msg";
+                msgDiv.innerText = data.text;
+            } else if (data.type === "image") {
+                msgDiv.className = "chat-message";
+                msgDiv.innerHTML = `<b>${data.user}:</b><br><img src="${data.mediaUrl}" alt="Fotoğraf">`;
+            } else if (data.type === "video") {
+                msgDiv.className = "chat-message";
+                msgDiv.innerHTML = `<b>${data.user}:</b><br><video controls><source src="${data.mediaUrl}"></video>`;
+            } else {
+                msgDiv.className = "chat-message";
+                msgDiv.innerHTML = `<b>${data.user}:</b> ${data.text}`;
+            }
+            
+            chatMessages.appendChild(msgDiv);
+        });
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
 }
 </script>
 
