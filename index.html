@@ -1,2 +1,77 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Order</title>
+<style>
+*{box-sizing:border-box}body{font-family:'Segoe UI',sans-serif;background:#121212;color:#e0e0e0;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
+.c-btn{position:fixed;top:20px;right:20px;background:#5865F2;color:#fff;padding:10px 16px;border-radius:8px;border:none;font-weight:600;font-size:13px;cursor:pointer;z-index:1000;box-shadow:0 4px 15px rgba(88,101,242,0.4)}
+.modal{display:none;position:fixed;top:70px;right:20px;width:300px;height:380px;background:#1e1e1e;border:1px solid #333;border-radius:10px;z-index:1001;flex-direction:column;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.8)}
+.m-head{background:#2b2d31;padding:10px;font-weight:bold;font-size:13px;color:#fff;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333}
+.m-head button{background:none;border:none;color:#aaa;font-size:14px;cursor:pointer}
+.m-msgs{flex:1;padding:10px;overflow-y:auto;font-size:12px;display:flex;flex-direction:column;gap:6px;color:#ccc}
+.msg{background:#25262b;padding:7px;border-radius:5px;border-left:3px solid #5865F2;word-break:break-word}
+.m-foot{display:flex;padding:8px;background:#181818;border-top:1px solid #333;gap:5px}
+.m-foot input{flex:1;background:#2b2d31;border:1px solid #3a3b40;border-radius:5px;padding:6px;color:#fff;font-size:12px;outline:none}
+.m-foot button{background:#5865F2;color:#fff;border:none;padding:0 10px;border-radius:5px;font-weight:bold;cursor:pointer;font-size:12px}
+.card{width:100%;max-width:500px;background:#1e1e1e;border-radius:12px;padding:20px;border:1px solid #333;box-shadow:0 10px 30px rgba(0,0,0,0.8)}
+h1{color:#fff;text-align:center;font-size:18px;border-bottom:2px solid #333;padding-bottom:10px;margin-top:0}
+h2{color:#5865F2;font-size:14px;margin:0 0 6px 0}
+p{font-size:12px;line-height:1.4;color:#ccc;margin:0}
+.box{background:#2b2d31;padding:12px;border-radius:8px;margin-bottom:10px;border-left:4px solid #5865F2}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.tool{background:#25262b;padding:7px 10px;border-radius:5px;font-size:11px;border:1px solid #3a3b40}
+.btn{display:block;width:100%;text-decoration:none;padding:12px;border-radius:8px;font-weight:600;font-size:13px;text-align:center;color:#fff;background:#5865F2;margin-top:15px}
+.btn:hover{background:#4752c4}
+</style>
+</head>
+<body>
 
-.
+<button class="c-btn" onclick="tChat()">💬 Global Sohbet</button>
+
+<div class="modal" id="cModal">
+    <div class="m-head"><span>Global Sohbet</span><button onclick="tChat()">✕</button></div>
+    <div class="m-msgs" id="cMsgs"><div class="msg"><b>Sistem:</b> Sohbete hoş geldiniz!</div></div>
+    <div class="m-foot">
+        <input type="text" id="cInput" placeholder="Mesaj yaz..." onkeypress="if(event.key==='Enter')sMsg()">
+        <button onclick="sMsg()">Gönder</button>
+    </div>
+</div>
+
+<div class="card">
+    <h1>Dark Order - Kontrol Paneli</h1>
+    <div class="box">
+        <h2>Sunucu Hakkında</h2>
+        <p>Sunucumuz kesinlikle sanala ve Discord'a yeni başlayan kişiler içindir. Burada sanala olarak verdiğimiz konular çok abartı değil; burada tanışır ve keyifli vakit geçiririz. Sizler için birkaç şey ekledik. Eğer büyütmek istiyorsanız elbet fırsatınız olacak... Sunucuya kişi çekmeniz bizi mutlu eder.</p>
+    </div>
+    <div class="box">
+        <h2>Kurallar</h2>
+        <p>Sunucuda <strong>ADK, MDK, DDK serbesttir</strong>. Şimdiden iyi eğlenceler!</p>
+    </div>
+    <div class="box">
+        <h2>Konular ve Araçlar</h2>
+        <div class="grid">
+            <div class="tool">📁 4d-soyad-sorgu</div>
+            <div class="tool">🤖 oto-tg-katilma</div>
+            <div class="tool">🌐 ilbar-at</div>
+            <div class="tool">🛡️ goodbyedpi-kurma</div>
+            <div class="tool">📧 t3mp-mail</div>
+            <div class="tool">📸 ısta-takipçi</div>
+            <div class="tool">🚀 s4nucu-sp7m</div>
+            <div class="tool">🔍 sherlock</div>
+            <div class="tool">💻 browse-stealer 😁</div>
+            <div class="tool">💥 sms-bomber</div>
+            <div class="tool">🆔 id-sorgu</div>
+        </div>
+    </div>
+    <a href="https://discord.gg/QF6Xvc2a3" class="btn" target="_blank">Discord'a Katıl</a>
+</div>
+
+<script>
+function tChat(){let m=document.getElementById('cModal');m.style.display=m.style.display==='flex'?'none':'flex'}
+function sMsg(){let i=document.getElementById('cInput'),t=i.value.trim();if(!t)return;let c=document.getElementById('cMsgs');c.innerHTML+=`<div class="msg"><b>Ziyaretçi:</b> ${t.replace(/</g,"&lt;")}</div>`;i.value='';c.scrollTop=c.scrollHeight}
+</script>
+
+</body>
+</html>
+
