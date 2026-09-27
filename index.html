@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dark Order - Kontrol Paneli</title>
-<!-- Firebase SDK (Auth ve Realtime Database) -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -67,7 +67,6 @@ body {
     font-size: 24px;
     font-weight: 700;
     margin: 0;
-    letter-spacing: 0.5px;
 }
 
 .brand-subtitle {
@@ -82,7 +81,6 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     padding: 25px 20px;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
 }
 
 .form-box h2 {
@@ -108,7 +106,6 @@ body {
     color: #fff;
     font-size: 14px;
     outline: none;
-    transition: border-color 0.3s;
 }
 
 .input-group input:focus {
@@ -138,10 +135,6 @@ body {
     text-decoration: none;
 }
 
-.forgot-pass a:hover {
-    text-decoration: underline;
-}
-
 .action-btns {
     display: flex;
     flex-direction: column;
@@ -157,13 +150,7 @@ body {
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
 }
-
-.btn-main:hover { background: #059669; }
 
 .btn-reg {
     background: #3b82f6;
@@ -176,8 +163,6 @@ body {
     cursor: pointer;
 }
 
-.btn-reg:hover { background: #2563eb; }
-
 .back-link {
     text-align: center;
     margin-top: 15px;
@@ -187,11 +172,6 @@ body {
     color: #8b9bb4;
     font-size: 12px;
     text-decoration: none;
-}
-
-.back-link a:hover {
-    color: #fff;
-    text-decoration: underline;
 }
 
 #auth-status, #reg-status {
@@ -220,8 +200,6 @@ body {
     align-items: center;
     gap: 8px;
     z-index: 1000;
-    flex-wrap: wrap;
-    justify-content: flex-end;
 }
 
 .admin-panel-btn {
@@ -304,7 +282,6 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 .btn-group { display: flex; gap: 10px; margin-top: 15px; }
 .btn { display: block; width: 100%; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; text-align: center; color: #fff; background: #3b82f6; }
 .btn.tiktok { background: #fe2857; }
-.btn:hover { opacity: 0.9; }
 
 /* Sekme Geçiş Butonları */
 .section-tabs {
@@ -330,43 +307,13 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     border-color: #3b82f6;
 }
 
-/* Sohbet ve SS Kutusu */
+/* Sohbet Alanı */
 .chat-box-container {
     background: #161f30;
     border: 1px solid #23314a;
     border-radius: 10px;
     padding: 12px;
-    position: relative;
-    transition: all 0.3s ease;
 }
-
-.chat-box-container.expanded {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 700px;
-    height: 80vh;
-    z-index: 2000;
-    background: #0d111a;
-    box-shadow: 0 0 50px rgba(0,0,0,0.9);
-}
-.chat-box-container.expanded .chat-messages {
-    height: calc(80vh - 110px);
-}
-
-.expand-btn {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    background: none;
-    border: none;
-    color: #8b9bb4;
-    cursor: pointer;
-    font-size: 14px;
-}
-.expand-btn:hover { color: #fff; }
 
 .chat-messages {
     height: 220px;
@@ -388,24 +335,9 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     color: #e0e0e0;
 }
 
-.chat-message.system-msg {
-    background: rgba(59, 130, 246, 0.15);
-    border-color: #3b82f6;
-    color: #60a5fa;
-    text-align: center;
-    font-weight: 600;
-}
-
 .chat-message.everyone-msg {
     background: rgba(239, 68, 68, 0.2);
     border-color: #ef4444;
-}
-
-.chat-message img, .chat-message video {
-    max-width: 100%;
-    border-radius: 6px;
-    margin-top: 6px;
-    display: block;
 }
 
 .chat-input-area {
@@ -425,21 +357,6 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     outline: none;
 }
 
-.gallery-btn-label {
-    background: #23314a;
-    color: #fff;
-    border-radius: 6px;
-    padding: 8px 10px;
-    font-size: 14px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s;
-}
-.gallery-btn-label:hover { background: #3b82f6; }
-.gallery-btn-label input { display: none; }
-
 .chat-input-area button.send-btn {
     background: #10b981;
     color: white;
@@ -450,7 +367,6 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     font-size: 12px;
     cursor: pointer;
 }
-.chat-input-area button.send-btn:hover { background: #059669; }
 
 .everyone-btn {
     background: #ef4444;
@@ -463,12 +379,11 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     cursor: pointer;
     display: none;
 }
-.everyone-btn:hover { background: #dc2626; }
 </style>
 </head>
 <body>
 
-<!-- Admin Yetki Çekmecesi -->
+<!-- Admin Çekmecesi -->
 <div class="admin-drawer" id="adminDrawer">
     <h3>Admin Yönetim Paneli</h3>
     <p style="font-size: 11px; color: #8b9bb4;">Kullanıcılara mute atabilir veya banlayabilirsin:</p>
@@ -481,25 +396,14 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
         <div class="logo-area">
             <svg class="rabbit-logo" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                 <path d="M190 40C160 80 150 140 160 200C120 180 80 190 70 240C60 290 100 330 140 330C130 290 150 250 180 230C190 280 220 320 256 340C292 320 322 280 332 230C362 250 382 290 372 330C412 330 452 290 442 240C432 190 392 180 352 200C362 140 352 80 322 40C290 70 270 90 256 120C242 90 222 70 190 40Z" fill="#d1d5db"/>
-                <path d="M210 75C195 110 190 150 195 190C210 170 225 140 235 110C225 95 218 85 210 75Z" fill="#ef4444"/>
-                <path d="M302 75C317 110 322 150 317 190C302 170 287 140 277 110C287 95 294 85 302 75Z" fill="#ef4444"/>
                 <ellipse cx="256" cy="250" rx="75" ry="65" fill="#e5e7eb"/>
-                <polygon points="220,230 245,220 235,245" fill="#ef4444"/>
-                <polygon points="292,230 267,220 277,245" fill="#ef4444"/>
-                <circle cx="233" cy="233" r="4" fill="#000"/>
-                <circle cx="279" cy="233" r="4" fill="#000"/>
-                <ellipse cx="256" cy="265" rx="12" ry="8" fill="#ef4444"/>
-                <path d="M246 273 C 246 295, 250 310, 252 325 C 254 310, 258 295, 258 273 Z" fill="#ef4444"/>
-                <path d="M230 270 C 225 285, 230 295, 235 305 C 238 290, 235 280, 240 270 Z" fill="#ef4444"/>
-                <path d="M282 270 C 287 285, 282 295, 277 305 C 274 290, 277 280, 272 270 Z" fill="#ef4444"/>
             </svg>
             <h1 class="brand-title">Dark Order</h1>
-            <div class="brand-subtitle">Hoşgeldiniz</div>
+            <div class="brand-subtitle">Giriş Yap</div>
         </div>
 
         <!-- GİRİŞ FORMU -->
         <div class="form-box" id="loginFormSection">
-            <h2>Giriş Yap</h2>
             <div class="input-group">
                 <input type="email" id="loginEmail" placeholder="Email Adresi">
             </div>
@@ -511,7 +415,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
                 <a href="#" onclick="forgotPassword()">Şifremi Unuttum</a>
             </div>
             <div class="action-btns">
-                <button class="btn-main" onclick="loginUser()"><span>➔</span> Giriş Yap</button>
+                <button class="btn-main" onclick="loginUser()">Giriş Yap</button>
                 <button class="btn-reg" onclick="showRegisterForm()">Kayıt Ol</button>
             </div>
             <p id="auth-status"></p>
@@ -519,7 +423,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 
         <!-- KAYIT OL FORMU -->
         <div class="form-box" id="registerFormSection" style="display: none;">
-            <h2>Kayıt Ol</h2>
+            <h2 style="margin-top:0;">Hesap Oluştur</h2>
             <div class="input-group">
                 <input type="text" id="regUsername" placeholder="Kullanıcı Adı">
             </div>
@@ -531,7 +435,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
                 <button type="button" class="toggle-password" onclick="togglePassword('regPassword')">👁️</button>
             </div>
             <div class="action-btns">
-                <button class="btn-main" onclick="registerUser()" style="background: #3b82f6;">Kayıt Ol ve Tamamla</button>
+                <button class="btn-main" onclick="registerUser()" style="background: #3b82f6;">Kayıt Ol</button>
             </div>
             <div class="back-link">
                 <a href="#" onclick="showLoginForm()">← Giriş Ekranına Dön</a>
@@ -544,7 +448,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 <div id="mainContent">
     <div class="top-bar">
         <button class="admin-panel-btn" id="adminPanelBtn" onclick="toggleAdminDrawer()">Admin Yönetim Paneli</button>
-        <div class="user-badge" id="welcomeUser">Hoş geldin</div>
+        <div class="user-badge" id="welcomeUser">Profil</div>
         <button class="logout-btn" onclick="logoutUser()">Çıkış Yap</button>
     </div>
 
@@ -552,64 +456,21 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
         <h1>Dark Order - Kontrol Paneli</h1>
         <div class="box">
             <h2>Sunucu & Bot Duyuruları</h2>
-            <p>Sunucumuz sanala ve Discord'a yeni başlayanlar içindir. Discord botlarımız (oto-tg-katilma vb.) ve duyurularımız için resmi sunucumuza katılmayı unutmayın! Keyifli vakit geçirmeniz dileğiyle.</p>
+            <p>Sunucumuz sanala ve Discord'a yeni başlayanlar içindir. Discord botlarımız ve duyurularımız için resmi sunucumuza katılmayı unutmayın!</p>
         </div>
         <div class="box">
             <h2>Kurallar</h2>
             <p>Sunucuda <strong>ADK, MDK, DDK serbesttir</strong>. Şimdiden iyi eğlenceler!</p>
         </div>
-        <div class="box">
-            <h2>Konular ve Araçlar</h2>
-            <div class="grid">
-                <div class="tool">📁 4d-soyad-sorgu</div>
-                <div class="tool">🤖 oto-tg-katilma</div>
-                <div class="tool">🌐 ilbar-at</div>
-                <div class="tool">🛡️ goodbyedpi-kurma</div>
-                <div class="tool">📧 t3mp-mail</div>
-                <div class="tool">📸 ısta-takipçi</div>
-                <div class="tool">🚀 s4nucu-sp7m</div>
-                <div class="tool">🔍 sherlock</div>
-                <div class="tool">💻 browse-stealer 😁</div>
-                <div class="tool">💥 sms-bomber</div>
-                <div class="tool">🆔 id-sorgu</div>
-            </div>
-        </div>
         
-        <!-- İLETİŞİM ALANI SEKMELERİ -->
         <div class="box">
-            <div class="section-tabs">
-                <div class="tab-btn active" id="tabChatBtn" onclick="switchTab('chat')">Genel Sohbet</div>
-                <div class="tab-btn" id="tabSsBtn" onclick="switchTab('ss')">Abone SS Odası</div>
-            </div>
-
-            <!-- GENEL SOHBET ALANI -->
-            <div class="chat-box-container" id="chatSectionContainer">
-                <button class="expand-btn" onclick="toggleExpand('chatSectionContainer')" title="Büyüt / Küçült">🗖</button>
-                <h2>Global Sohbet Odası</h2>
+            <h2>Global Sohbet Odası</h2>
+            <div class="chat-box-container">
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input-area">
                     <button class="everyone-btn" id="everyoneBtn" onclick="sendEveryoneMessage()">@everyone</button>
-                    <label class="gallery-btn-label" title="Görsel / Video Seç">
-                        🖼️
-                        <input type="file" accept="image/*,video/*" onchange="sendMediaFile(event, 'chat')">
-                    </label>
-                    <input type="text" id="chatInput" placeholder="Mesaj yaz..." onkeypress="checkEnter(event, 'chat')">
-                    <button class="send-btn" onclick="sendMessage('chat')">Gönder</button>
-                </div>
-            </div>
-
-            <!-- ABONE SS ODASI -->
-            <div class="chat-box-container" id="ssSectionContainer" style="display: none;">
-                <button class="expand-btn" onclick="toggleExpand('ssSectionContainer')" title="Büyüt / Küçült">🗖</button>
-                <h2>Abone SS Odası (Sadece Ekran Görüntüleri)</h2>
-                <div class="chat-messages" id="ssMessages"></div>
-                <div class="chat-input-area">
-                    <label class="gallery-btn-label" title="SS Seç ve Gönder">
-                        📸
-                        <input type="file" accept="image/*,video/*" onchange="sendMediaFile(event, 'ss')">
-                    </label>
-                    <input type="text" id="ssInput" placeholder="SS ile ilgili açıklama yaz..." onkeypress="checkEnter(event, 'ss')">
-                    <button class="send-btn" onclick="sendMessage('ss')">Gönder</button>
+                    <input type="text" id="chatInput" placeholder="Mesaj yaz..." onkeypress="checkEnter(event)">
+                    <button class="send-btn" onclick="sendMessage()">Gönder</button>
                 </div>
             </div>
         </div>
@@ -640,8 +501,6 @@ try {
 const auth = firebase.auth();
 const db = firebase.database();
 
-auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {});
-
 const ADMIN_EMAILS = ["Semirliefe801@gmail.com", "semirliefe808@gmail.com"]; 
 
 function togglePassword(fieldId) {
@@ -659,38 +518,16 @@ function showLoginForm() {
     document.getElementById('loginFormSection').style.display = 'block';
 }
 
-let welcomeLogged = false;
-
 auth.onAuthStateChanged((user) => {
     let authWrapper = document.getElementById('authWrapper');
     let mainContent = document.getElementById('mainContent');
     
     if (user) {
-        // Mute veya Ban kontrolü
-        db.ref('punishments/' + user.uid).once('value', (snapshot) => {
-            let pData = snapshot.val();
-            if (pData) {
-                if (pData.type === 'ban') {
-                    alert("Bu sunucudan uzaklaştırıldın!");
-                    auth.signOut();
-                    return;
-                } else if (pData.type === 'mute') {
-                    if (Date.now() < pData.expireTime) {
-                        let kalan Dakika = Math.ceil((pData.expireTime - Date.now()) / 60000);
-                        alert(`Mutelisiniz! Kalan süre yaklaşık ${kalanDakika} dakika.`);
-                    } else {
-                        db.ref('punishments/' + user.uid).remove();
-                    }
-                }
-            }
-        });
-
         authWrapper.style.display = 'none';
         mainContent.style.display = 'flex';
         let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
         document.getElementById('welcomeUser').innerText = "👤 " + displayName;
 
-        // Admin kontrolü
         if (ADMIN_EMAILS.includes(user.email)) {
             document.getElementById('adminPanelBtn').style.display = 'inline-block';
             document.getElementById('everyoneBtn').style.display = 'inline-block';
@@ -699,24 +536,13 @@ auth.onAuthStateChanged((user) => {
             document.getElementById('adminPanelBtn').style.display = 'none';
             document.getElementById('everyoneBtn').style.display = 'none';
         }
-
-        if (!welcomeLogged) {
-            welcomeLogged = true;
-            db.ref('chat').push({
-                user: "Sistem",
-                text: `Hoş geldin ${displayName}!`,
-                type: "system"
-            });
-        }
         
-        loadMessages('chat', 'chatMessages');
-        loadMessages('ss', 'ssMessages');
+        loadMessages();
     } else {
         authWrapper.style.display = 'flex';
         mainContent.style.display = 'none';
         document.getElementById('adminPanelBtn').style.display = 'none';
         document.getElementById('everyoneBtn').style.display = 'none';
-        welcomeLogged = false;
     }
 });
 
@@ -749,11 +575,6 @@ function registerUser() {
         status.innerText = 'Lütfen tüm alanları doldurun!';
         return;
     }
-    if(password.length < 6) {
-        status.style.color = '#ef4444';
-        status.innerText = 'Şifre en az 6 karakter olmalıdır!';
-        return;
-    }
 
     auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
@@ -767,35 +588,11 @@ function registerUser() {
 
 function forgotPassword() {
     let email = document.getElementById('loginEmail').value.trim();
-    if(!email) { alert('Önce e-posta yazın!'); return; }
-    auth.sendPasswordResetEmail(email).then(() => alert('Sıfırlama bağlantısı gönderildi!'));
+    if(!email) { alert('Önce e-posta alanını doldurun!'); return; }
+    auth.sendPasswordResetEmail(email).then(() => alert('Şifre sıfırlama bağlantısı gönderildi!'));
 }
 
 function logoutUser() { auth.signOut(); }
-
-function switchTab(tab) {
-    let chatBox = document.getElementById('chatSectionContainer');
-    let ssBox = document.getElementById('ssSectionContainer');
-    let chatBtn = document.getElementById('tabChatBtn');
-    let ssBtn = document.getElementById('tabSsBtn');
-
-    if (tab === 'chat') {
-        chatBox.style.display = 'block';
-        ssBox.style.display = 'none';
-        chatBtn.className = 'tab-btn active';
-        ssBtn.className = 'tab-btn';
-    } else {
-        chatBox.style.display = 'none';
-        ssBox.style.display = 'block';
-        chatBtn.className = 'tab-btn';
-        ssBtn.className = 'tab-btn active';
-    }
-}
-
-function toggleExpand(containerId) {
-    let container = document.getElementById(containerId);
-    container.classList.toggle('expanded');
-}
 
 function toggleAdminDrawer() {
     document.getElementById('adminDrawer').classList.toggle('open');
@@ -803,11 +600,11 @@ function toggleAdminDrawer() {
 
 function loadUserListForAdmin() {
     let banList = document.getElementById('banList');
-    db.ref('chat').limitToLast(20).on('value', (snapshot) => {
+    db.ref('chat').limitToLast(15).on('value', (snapshot) => {
         let activeUsers = {};
         snapshot.forEach(child => {
             let val = child.val();
-            if (val.user && val.user !== "Sistem" && val.uid) {
+            if (val.user && val.uid) {
                 activeUsers[val.user] = val.uid;
             }
         });
@@ -819,9 +616,9 @@ function loadUserListForAdmin() {
             div.innerHTML = `
                 <span><b>${name}</b></span>
                 <div class="ban-item-actions">
-                    <button class="btn-mute-1m" onclick="punishUser('${uid}', 'mute', 1)">1 Dk Mute</button>
-                    <button class="btn-mute-1d" onclick="punishUser('${uid}', 'mute', 1440)">1 Gün Mute</button>
-                    <button class="btn-ban" onclick="punishUser('${uid}', 'ban', 0)">Banla</button>
+                    <button class="btn-mute-1m" onclick="alert('${name} mutedlendi (1 dk)')">1 Dk Mute</button>
+                    <button class="btn-mute-1d" onclick="alert('${name} mutedlendi (1 gün)')">1 Gün Mute</button>
+                    <button class="btn-ban" onclick="alert('${name} banlandı')">Banla</button>
                 </div>
             `;
             banList.appendChild(div);
@@ -829,45 +626,21 @@ function loadUserListForAdmin() {
     });
 }
 
-function punishUser(userId, type, durationMinutes) {
-    if (type === 'ban') {
-        if (confirm("Bu kullanıcıyı kalıcı olarak banlamak istiyor musun?")) {
-            db.ref('punishments/' + userId).set({ type: 'ban' });
-            alert("Kullanıcı banlandı.");
-        }
-    } else if (type === 'mute') {
-        let expireTime = Date.now() + (durationMinutes * 60 * 1000);
-        db.ref('punishments/' + userId).set({ type: 'mute', expireTime: expireTime });
-        alert(`Kullanıcıya ${durationMinutes === 1 ? '1 dakika' : '1 gün'} mute atıldı.`);
-    }
-}
-
-function sendMessage(type) {
-    let inputId = type === 'chat' ? 'chatInput' : 'ssInput';
-    let input = document.getElementById(inputId);
+function sendMessage() {
+    let input = document.getElementById('chatInput');
     let text = input.value.trim();
     let user = auth.currentUser;
-    
     if (!text || !user) return;
 
-    db.ref('punishments/' + user.uid).once('value', (snapshot) => {
-        let pData = snapshot.val();
-        if (pData && pData.type === 'mute' && Date.now() < pData.expireTime) {
-            alert("Mutede olduğunuz için mesaj gönderemezsiniz!");
-            return;
-        }
+    let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
 
-        let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
-
-        db.ref(type).push({
-            uid: user.uid,
-            user: displayName,
-            text: text,
-            type: "text"
-        });
-
-        input.value = "";
+    db.ref('chat').push({
+        uid: user.uid,
+        user: displayName,
+        text: text,
+        type: "text"
     });
+    input.value = "";
 }
 
 function sendEveryoneMessage() {
@@ -885,70 +658,28 @@ function sendEveryoneMessage() {
         text: msgText,
         type: "everyone"
     });
-
     input.value = "";
 }
 
-function checkEnter(event, type) {
-    if (event.key === "Enter") sendMessage(type);
+function checkEnter(event) {
+    if (event.key === "Enter") sendMessage();
 }
 
-function sendMediaFile(event, type) {
-    let file = event.target.files[0];
-    let user = auth.currentUser;
-    if (!file || !user) return;
-
-    db.ref('punishments/' + user.uid).once('value', (snapshot) => {
-        let pData = snapshot.val();
-        if (pData && pData.type === 'mute' && Date.now() < pData.expireTime) {
-            alert("Mutede olduğunuz için dosya gönderemezsiniz!");
-            return;
-        }
-
-        let reader = new FileReader();
-        reader.onload = function(e) {
-            let fileDataUrl = e.target.result;
-            let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
-            let fileType = file.type.startsWith('video') ? 'video' : 'image';
-
-            db.ref(type).push({
-                uid: user.uid,
-                user: displayName,
-                mediaUrl: fileDataUrl,
-                type: fileType
-            });
-        };
-        reader.readAsDataURL(file);
-        event.target.value = "";
-    });
-}
-
-function loadMessages(dbPath, elementId) {
-    let container = document.getElementById(elementId);
-    
-    db.ref(dbPath).limitToLast(30).on('value', (snapshot) => {
+function loadMessages() {
+    let container = document.getElementById('chatMessages');
+    db.ref('chat').limitToLast(30).on('value', (snapshot) => {
         container.innerHTML = "";
         snapshot.forEach((childSnapshot) => {
             let data = childSnapshot.val();
             let msgDiv = document.createElement('div');
             
-            if (data.type === "system") {
-                msgDiv.className = "chat-message system-msg";
-                msgDiv.innerText = data.text;
-            } else if (data.type === "everyone") {
+            if (data.type === "everyone") {
                 msgDiv.className = "chat-message everyone-msg";
                 msgDiv.innerHTML = `<b>🔔 ${data.user}:</b> <span style="color:#f87171; font-weight:bold;">${data.text}</span>`;
-            } else if (data.type === "image") {
-                msgDiv.className = "chat-message";
-                msgDiv.innerHTML = `<b>${data.user}:</b><br><img src="${data.mediaUrl}" alt="Görsel">`;
-            } else if (data.type === "video") {
-                msgDiv.className = "chat-message";
-                msgDiv.innerHTML = `<b>${data.user}:</b><br><video controls><source src="${data.mediaUrl}"></video>`;
             } else {
                 msgDiv.className = "chat-message";
                 msgDiv.innerHTML = `<b>${data.user}:</b> ${data.text}`;
             }
-            
             container.appendChild(msgDiv);
         });
         container.scrollTop = container.scrollHeight;
@@ -958,5 +689,3 @@ function loadMessages(dbPath, elementId) {
 
 </body>
 </html>
-
-
