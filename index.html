@@ -283,16 +283,16 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 .btn { display: block; width: 100%; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; text-align: center; color: #fff; background: #3b82f6; }
 .btn.tiktok { background: #fe2857; }
 
-/* Sohbet Alanı */
+/* Sohbet Alanları Ortak Stil */
 .chat-box-container {
-    background: #161f30;
+    background: #101622;
     border: 1px solid #23314a;
     border-radius: 10px;
-    padding: 12px;
+    padding: 10px;
 }
 
 .chat-messages {
-    height: 250px;
+    height: 200px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -302,7 +302,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 }
 
 .chat-message {
-    background: #101622;
+    background: #161f30;
     padding: 8px 10px;
     border-radius: 6px;
     font-size: 12px;
@@ -327,19 +327,17 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     display: flex;
     gap: 6px;
     align-items: center;
-    flex-wrap: wrap;
 }
 
 .chat-input-area input[type="text"] {
     flex: 1;
-    background: #101622;
+    background: #161f30;
     border: 1px solid #23314a;
     border-radius: 6px;
     padding: 8px 10px;
     color: #fff;
     font-size: 12px;
     outline: none;
-    min-width: 120px;
 }
 
 .chat-input-area button.send-btn {
@@ -347,7 +345,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     color: white;
     border: none;
     border-radius: 6px;
-    padding: 8px 12px;
+    padding: 8px 14px;
     font-weight: 600;
     font-size: 12px;
     cursor: pointer;
@@ -358,7 +356,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     color: white;
     border: none;
     border-radius: 6px;
-    padding: 8px 8px;
+    padding: 8px 10px;
     font-weight: 600;
     font-size: 11px;
     cursor: pointer;
@@ -479,21 +477,33 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
             </div>
         </div>
         
-        <!-- GLOBAL SOHBET VE ABONE SS -->
+        <!-- 1. GLOBAL SOHBET ODASI (Sadece Yazı) -->
         <div class="box">
-            <h2>Global Sohbet Odası & Abone SS</h2>
-            <p style="font-size: 11px; color: #8b9bb4; margin-bottom: 8px;">Aşağıdan mesaj yazabilir veya Abone SS / Fotoğraf / Video yükleyebilirsin.</p>
+            <h2>Global Sohbet Odası</h2>
+            <p style="font-size: 11px; color: #8b9bb4; margin-bottom: 8px;">Sadece yazı yazabileceğiniz genel sohbet alanı.</p>
             <div class="chat-box-container">
-                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-messages" id="globalChatMessages"></div>
+                <div class="chat-input-area">
+                    <button class="everyone-btn" id="everyoneBtn" onclick="sendEveryoneMessage()">@everyone</button>
+                    <input type="text" id="globalChatInput" placeholder="Sohbet mesajı yaz..." onkeypress="checkGlobalEnter(event)">
+                    <button class="send-btn" onclick="sendGlobalMessage()">Gönder</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. ABONE SS / MEDYA ALANI (Yazı + Fotoğraf + Video) -->
+        <div class="box">
+            <h2>Abone SS & Medya Paylaşım Alanı</h2>
+            <p style="font-size: 11px; color: #8b9bb4; margin-bottom: 8px;">Buradan hem yazı yazabilir hem de fotoğraf veya video atabilirsiniz.</p>
+            <div class="chat-box-container">
+                <div class="chat-messages" id="ssChatMessages"></div>
                 
-                <!-- Gizli dosya seçici -->
                 <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display: none;" onchange="handleMediaUpload(event)">
 
                 <div class="chat-input-area">
-                    <button class="everyone-btn" id="everyoneBtn" onclick="sendEveryoneMessage()">@everyone</button>
-                    <button class="media-upload-btn" onclick="document.getElementById('mediaFileInput').click()">📸 Medya / SS At</button>
-                    <input type="text" id="chatInput" placeholder="Mesaj yaz..." onkeypress="checkEnter(event)">
-                    <button class="send-btn" onclick="sendMessage()">Gönder</button>
+                    <button class="media-upload-btn" onclick="document.getElementById('mediaFileInput').click()">📸 Medya / SS Seç</button>
+                    <input type="text" id="ssChatInput" placeholder="Açıklama veya yazı yaz..." onkeypress="checkSSEnter(event)">
+                    <button class="send-btn" onclick="sendSSMessage()">Gönder</button>
                 </div>
             </div>
         </div>
@@ -560,7 +570,8 @@ auth.onAuthStateChanged((user) => {
             document.getElementById('everyoneBtn').style.display = 'none';
         }
         
-        loadMessages();
+        loadGlobalMessages();
+        loadSSMessages();
     } else {
         authWrapper.style.display = 'flex';
         mainContent.style.display = 'none';
@@ -623,7 +634,7 @@ function toggleAdminDrawer() {
 
 function loadUserListForAdmin() {
     let banList = document.getElementById('banList');
-    db.ref('chat').limitToLast(15).on('value', (snapshot) => {
+    db.ref('globalChat').limitToLast(15).on('value', (snapshot) => {
         let activeUsers = {};
         snapshot.forEach(child => {
             let val = child.val();
@@ -649,15 +660,16 @@ function loadUserListForAdmin() {
     });
 }
 
-function sendMessage() {
-    let input = document.getElementById('chatInput');
+/* Global Sohbet Fonksiyonları */
+function sendGlobalMessage() {
+    let input = document.getElementById('globalChatInput');
     let text = input.value.trim();
     let user = auth.currentUser;
     if (!text || !user) return;
 
     let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
 
-    db.ref('chat').push({
+    db.ref('globalChat').push({
         uid: user.uid,
         user: displayName,
         text: text,
@@ -667,7 +679,7 @@ function sendMessage() {
 }
 
 function sendEveryoneMessage() {
-    let input = document.getElementById('chatInput');
+    let input = document.getElementById('globalChatInput');
     let text = input.value.trim();
     let user = auth.currentUser;
     if (!user || !ADMIN_EMAILS.includes(user.email)) return;
@@ -675,11 +687,54 @@ function sendEveryoneMessage() {
     let msgText = text ? "@everyone " + text : "@everyone Dikkat! Yeni duyuru var.";
     let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
 
-    db.ref('chat').push({
+    db.ref('globalChat').push({
         uid: user.uid,
         user: displayName + " (ADMIN)",
         text: msgText,
         type: "everyone"
+    });
+    input.value = "";
+}
+
+function checkGlobalEnter(event) {
+    if (event.key === "Enter") sendGlobalMessage();
+}
+
+function loadGlobalMessages() {
+    let container = document.getElementById('globalChatMessages');
+    db.ref('globalChat').limitToLast(30).on('value', (snapshot) => {
+        container.innerHTML = "";
+        snapshot.forEach((childSnapshot) => {
+            let data = childSnapshot.val();
+            let msgDiv = document.createElement('div');
+            
+            if (data.type === "everyone") {
+                msgDiv.className = "chat-message everyone-msg";
+                msgDiv.innerHTML = `<b>🔔 ${data.user}:</b> <span style="color:#f87171; font-weight:bold;">${data.text}</span>`;
+            } else {
+                msgDiv.className = "chat-message";
+                msgDiv.innerHTML = `<b>${data.user}:</b> ${data.text}`;
+            }
+            container.appendChild(msgDiv);
+        });
+        container.scrollTop = container.scrollHeight;
+    });
+}
+
+/* Abone SS / Medya Fonksiyonları */
+function sendSSMessage() {
+    let input = document.getElementById('ssChatInput');
+    let text = input.value.trim();
+    let user = auth.currentUser;
+    if (!text || !user) return;
+
+    let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
+
+    db.ref('ssChat').push({
+        uid: user.uid,
+        user: displayName,
+        text: text,
+        type: "text"
     });
     input.value = "";
 }
@@ -694,44 +749,47 @@ function handleMediaUpload(event) {
         let base64Data = e.target.result;
         let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
         let isVideo = file.type.startsWith('video');
+        let caption = document.getElementById('ssChatInput').value.trim();
 
-        db.ref('chat').push({
+        db.ref('ssChat').push({
             uid: user.uid,
-            user: displayName + " (Abone SS/Medya)",
+            user: displayName,
+            text: caption,
             mediaUrl: base64Data,
             mediaType: isVideo ? 'video' : 'image',
             type: "media"
         });
+        document.getElementById('ssChatInput').value = "";
     };
     reader.readAsDataURL(file);
-    event.target.value = ""; // Sıfırla
+    event.target.value = "";
 }
 
-function checkEnter(event) {
-    if (event.key === "Enter") sendMessage();
+function checkSSEnter(event) {
+    if (event.key === "Enter") sendSSMessage();
 }
 
-function loadMessages() {
-    let container = document.getElementById('chatMessages');
-    db.ref('chat').limitToLast(30).on('value', (snapshot) => {
+function loadSSMessages() {
+    let container = document.getElementById('ssChatMessages');
+    db.ref('ssChat').limitToLast(30).on('value', (snapshot) => {
         container.innerHTML = "";
         snapshot.forEach((childSnapshot) => {
             let data = childSnapshot.val();
             let msgDiv = document.createElement('div');
+            msgDiv.className = "chat-message";
             
-            if (data.type === "everyone") {
-                msgDiv.className = "chat-message everyone-msg";
-                msgDiv.innerHTML = `<b>🔔 ${data.user}:</b> <span style="color:#f87171; font-weight:bold;">${data.text}</span>`;
-            } else if (data.type === "media") {
-                msgDiv.className = "chat-message";
-                let mediaTag = data.mediaType === 'video' 
-                    ? `<video controls src="${data.mediaUrl}"></video>` 
-                    : `<img src="${data.mediaUrl}" alt="Abone SS / Medya">`;
-                msgDiv.innerHTML = `<b>📷 ${data.user}:</b><br>${mediaTag}`;
-            } else {
-                msgDiv.className = "chat-message";
-                msgDiv.innerHTML = `<b>${data.user}:</b> ${data.text}`;
+            let contentHTML = `<b>${data.user}:</b>`;
+            if (data.text) {
+                contentHTML += ` <span>${data.text}</span>`;
             }
+            if (data.mediaUrl) {
+                if (data.mediaType === 'video') {
+                    contentHTML += `<video controls src="${data.mediaUrl}"></video>`;
+                } else {
+                    contentHTML += `<img src="${data.mediaUrl}" alt="Abone SS">`;
+                }
+            }
+            msgDiv.innerHTML = contentHTML;
             container.appendChild(msgDiv);
         });
         container.scrollTop = container.scrollHeight;
