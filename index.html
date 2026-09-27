@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dark Order - Giriş ve Sohbet</title>
-<!-- Firebase App (v8) ve Auth & Realtime Database SDK -->
+<title>Dark Order - Giriş</title>
+<!-- Firebase Auth SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <style>
 * { box-sizing: border-box; }
 body {
@@ -191,9 +190,8 @@ body {
     flex-direction: column;
     align-items: center;
     width: 100%;
+    max-width: 500px;
     padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
 }
 
 .top-bar {
@@ -235,8 +233,7 @@ body {
     padding: 25px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-    margin-top: 60px;
-    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 h1 { color: #fff; text-align: center; font-size: 18px; border-bottom: 2px solid #23314a; padding-bottom: 12px; margin-top: 0; }
@@ -249,68 +246,6 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 .btn { display: block; width: 100%; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; text-align: center; color: #fff; background: #3b82f6; }
 .btn.tiktok { background: #fe2857; }
 .btn:hover { opacity: 0.9; }
-
-/* Global Sohbet Kutusu Stilleri */
-.chat-box {
-    background: #161f30;
-    border-radius: 12px;
-    border: 1px solid #23314a;
-    display: flex;
-    flex-direction: column;
-    height: 300px;
-    margin-top: 15px;
-}
-.chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-.chat-message {
-    background: #101622;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    border: 1px solid #23314a;
-    word-break: break-all;
-}
-.chat-message span.author {
-    color: #3b82f6;
-    font-weight: bold;
-    margin-right: 6px;
-}
-.chat-input-area {
-    display: flex;
-    padding: 10px;
-    gap: 8px;
-    border-top: 1px solid #23314a;
-    background: #121826;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
-.chat-input-area input {
-    flex: 1;
-    background: #161f30;
-    border: 1px solid #23314a;
-    border-radius: 8px;
-    padding: 8px 12px;
-    color: #fff;
-    font-size: 12px;
-    outline: none;
-}
-.chat-input-area button {
-    background: #10b981;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0 15px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 12px;
-}
-.chat-input-area button:hover { background: #059669; }
 </style>
 </head>
 <body>
@@ -337,12 +272,8 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
         </div>
 
         <div class="form-box">
-            <h2>Giriş Yap / Kayıt Ol</h2>
+            <h2>Giriş Yap</h2>
             
-            <div class="input-group">
-                <input type="text" id="username" placeholder="Kullanıcı Adı (İsmin)">
-            </div>
-
             <div class="input-group">
                 <input type="email" id="email" placeholder="Email Adresi">
             </div>
@@ -400,19 +331,6 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
                 <div class="tool">🆔 id-sorgu</div>
             </div>
         </div>
-
-        <!-- Global Sohbet Alanı -->
-        <div class="box">
-            <h2>💬 Global Sohbet Odası</h2>
-            <div class="chat-box">
-                <div class="chat-messages" id="chatMessages"></div>
-                <div class="chat-input-area">
-                    <input type="text" id="chatInput" placeholder="Bir şeyler yaz, herkese gitsin..." onkeypress="checkEnter(event)">
-                    <button onclick="sendMessage()">Gönder</button>
-                </div>
-            </div>
-        </div>
-
         <div class="btn-group">
             <a href="https://discord.gg/xMxtVGewJE" class="btn" target="_blank">Discord'a Katıl</a>
             <a href="https://www.tiktok.com/@gg.darkorder?_r=1&_t=ZS-9A54uScfLk5" class="btn tiktok" target="_blank">TikTok'a Katıl</a>
@@ -437,7 +355,12 @@ try {
 } catch (e) {}
 
 const auth = firebase.auth();
-const db = firebase.database();
+
+// Oturumun tarayıcı kapatıldığında/sekmeden çıkıldığında sıfırlanmasını sağlayan ayar
+auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    .catch((error) => {
+        console.error("Oturum kalıcılık hatası:", error);
+    });
 
 function togglePassword() {
     let passInput = document.getElementById('password');
@@ -455,10 +378,7 @@ auth.onAuthStateChanged((user) => {
     if (user) {
         authWrapper.style.display = 'none';
         mainContent.style.display = 'flex';
-        
-        // Kullanıcı adını Firebase profilinden veya email'den alalım
-        let displayName = user.displayName || localStorage.getItem('darkOrderName') || user.email.split('@')[0];
-        document.getElementById('welcomeUser').innerText = "👤 " + displayName;
+        document.getElementById('welcomeUser').innerText = "👤 " + user.email;
     } else {
         authWrapper.style.display = 'flex';
         mainContent.style.display = 'none';
@@ -468,7 +388,6 @@ auth.onAuthStateChanged((user) => {
 function loginUser() {
     let email = document.getElementById('email').value.trim();
     let password = document.getElementById('password').value.trim();
-    let username = document.getElementById('username').value.trim();
     let status = document.getElementById('auth-status');
     
     if(!email || !password) {
@@ -477,18 +396,11 @@ function loginUser() {
         return;
     }
 
-    if(username) {
-        localStorage.setItem('darkOrderName', username);
-    }
-
     status.style.color = '#8b9bb4';
     status.innerText = 'Giriş yapılıyor...';
 
     auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            if(username) {
-                userCredential.user.updateProfile({ displayName: username });
-            }
+        .then(() => {
             status.style.color = '#10b981';
             status.innerText = 'Giriş başarılı!';
         })
@@ -501,17 +413,11 @@ function loginUser() {
 function registerUser() {
     let email = document.getElementById('email').value.trim();
     let password = document.getElementById('password').value.trim();
-    let username = document.getElementById('username').value.trim();
     let status = document.getElementById('auth-status');
     
     if(!email || !password) {
         status.style.color = '#ef4444';
         status.innerText = 'Lütfen e-posta ve şifrenizi girin!';
-        return;
-    }
-    if(!username) {
-        status.style.color = '#ef4444';
-        status.innerText = 'Lütfen bir kullanıcı adı (isim) belirleyin!';
         return;
     }
     if(password.length < 6) {
@@ -520,16 +426,13 @@ function registerUser() {
         return;
     }
 
-    localStorage.setItem('darkOrderName', username);
     status.style.color = '#8b9bb4';
     status.innerText = 'Hesap oluşturuluyor...';
 
     auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            userCredential.user.updateProfile({ displayName: username }).then(() => {
-                status.style.color = '#10b981';
-                status.innerText = 'Kayıt başarılı! Giriş yapılıyor...';
-            });
+        .then(() => {
+            status.style.color = '#10b981';
+            status.innerText = 'Kayıt başarılı! Giriş yapılıyor...';
         })
         .catch((error) => {
             status.style.color = '#ef4444';
@@ -560,47 +463,6 @@ function forgotPassword() {
 
 function logoutUser() {
     auth.signOut();
-}
-
-// --- GLOBAL SOHBET FONKSİYONLARI ---
-function sendMessage() {
-    let input = document.getElementById('chatInput');
-    let text = input.value.trim();
-    if(!text) return;
-
-    let user = auth.currentUser;
-    let name = user ? (user.displayName || localStorage.getItem('darkOrderName') || user.email.split('@')[0]) : "Misafir";
-
-    db.ref('messages').push({
-        name: name,
-        text: text,
-        timestamp: Date.now()
-    });
-
-    input.value = "";
-}
-
-function checkEnter(e) {
-    if(e.key === 'Enter') {
-        sendMessage();
-    }
-}
-
-// Mesajları dinle ve ekrana yaz
-db.ref('messages').limitToLast(50).on('child_added', (snapshot) => {
-    let msg = snapshot.val();
-    let chatMessages = document.getElementById('chatMessages');
-    
-    let div = document.createElement('div');
-    div.className = 'chat-message';
-    div.innerHTML = `<span class="author">${escapeHtml(msg.name)}:</span> ${escapeHtml(msg.text)}`;
-    
-    chatMessages.appendChild(div);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-});
-
-function escapeHtml(text) {
-    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 </script>
 
