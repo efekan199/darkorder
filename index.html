@@ -207,10 +207,11 @@ body {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 500px;
+    max-width: 550px;
     padding: 20px 10px;
 }
 
+/* Üst Sağ Butonlar */
 .top-bar {
     position: fixed;
     top: 20px;
@@ -220,6 +221,43 @@ body {
     gap: 10px;
     z-index: 1000;
 }
+
+/* Sol Üç Çizgi Admin Menüsü Butonu */
+.admin-menu-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(22, 31, 48, 0.9);
+    border: 1px solid #23314a;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1000;
+    display: none;
+}
+.admin-menu-btn:hover { background: #3b82f6; }
+
+/* Admin Paneli Çekmecesi */
+.admin-drawer {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100%;
+    background: #0d111a;
+    border-right: 1px solid #23314a;
+    z-index: 1001;
+    transition: left 0.3s ease;
+    padding: 20px;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+}
+.admin-drawer.open { left: 0; }
+.admin-drawer h3 { color: #ef4444; font-size: 16px; margin-top: 0; border-bottom: 1px solid #23314a; padding-bottom: 10px; }
+.ban-list { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; max-height: 80vh; overflow-y: auto; }
+.ban-item { background: #161f30; padding: 8px; border-radius: 6px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+.ban-item button { background: #ef4444; border: none; color: white; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
 
 .user-badge {
     background: rgba(22, 31, 48, 0.9);
@@ -264,14 +302,67 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 .btn.tiktok { background: #fe2857; }
 .btn:hover { opacity: 0.9; }
 
-/* Genel Sohbet Alanı Tasarımı */
+/* Sekme Geçiş Butonları */
+.section-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.tab-btn {
+    flex: 1;
+    background: #101622;
+    border: 1px solid #23314a;
+    color: #8b9bb4;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+    text-align: center;
+}
+.tab-btn.active {
+    background: #3b82f6;
+    color: #fff;
+    border-color: #3b82f6;
+}
+
+/* Sohbet ve SS Kutusu */
 .chat-box-container {
     background: #161f30;
     border: 1px solid #23314a;
     border-radius: 10px;
     padding: 12px;
-    margin-top: 15px;
+    position: relative;
+    transition: all 0.3s ease;
 }
+
+.chat-box-container.expanded {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 700px;
+    height: 80vh;
+    z-index: 2000;
+    background: #0d111a;
+    box-shadow: 0 0 50px rgba(0,0,0,0.9);
+}
+.chat-box-container.expanded .chat-messages {
+    height: calc(80vh - 110px);
+}
+
+.expand-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #8b9bb4;
+    cursor: pointer;
+    font-size: 14px;
+}
+.expand-btn:hover { color: #fff; }
 
 .chat-messages {
     height: 220px;
@@ -325,7 +416,6 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     outline: none;
 }
 
-/* Galeri Butonu Tasarımı */
 .gallery-btn-label {
     background: #23314a;
     color: #fff;
@@ -338,12 +428,8 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     justify-content: center;
     transition: background 0.3s;
 }
-.gallery-btn-label:hover {
-    background: #3b82f6;
-}
-.gallery-btn-label input {
-    display: none;
-}
+.gallery-btn-label:hover { background: #3b82f6; }
+.gallery-btn-label input { display: none; }
 
 .chat-input-area button.send-btn {
     background: #10b981;
@@ -359,6 +445,15 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 </style>
 </head>
 <body>
+
+<!-- Admin Yetki Menüsü (Sol Üç Çizgi) -->
+<button class="admin-menu-btn" id="adminMenuBtn" onclick="toggleAdminDrawer()">☰</button>
+<div class="admin-drawer" id="adminDrawer">
+    <h3>Admin Yönetimi</h3>
+    <p style="font-size: 11px; color: #8b9bb4;">Trolleyen kullanıcıları buradan banlayabilir/atabilirsin:</p>
+    <div class="ban-list" id="banList"></div>
+    <button onclick="toggleAdminDrawer()" style="margin-top: 15px; width: 100%; background: #23314a; border: none; color: #fff; padding: 8px; border-radius: 6px; cursor: pointer;">Kapat</button>
+</div>
 
 <div id="authWrapper">
     <div class="auth-container">
@@ -384,57 +479,42 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
         <!-- GİRİŞ FORMU -->
         <div class="form-box" id="loginFormSection">
             <h2>Giriş Yap</h2>
-            
             <div class="input-group">
                 <input type="email" id="loginEmail" placeholder="Email Adresi">
             </div>
-            
             <div class="input-group">
                 <input type="password" id="loginPassword" placeholder="Şifre">
                 <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">👁️</button>
             </div>
-            
             <div class="forgot-pass">
                 <a href="#" onclick="forgotPassword()">Şifremi Unuttum</a>
             </div>
-
             <div class="action-btns">
-                <button class="btn-main" onclick="loginUser()">
-                    <span>➔</span> Giriş Yap
-                </button>
+                <button class="btn-main" onclick="loginUser()"><span>➔</span> Giriş Yap</button>
                 <button class="btn-reg" onclick="showRegisterForm()">Kayıt Ol</button>
             </div>
-
             <p id="auth-status"></p>
         </div>
 
         <!-- KAYIT OL FORMU -->
         <div class="form-box" id="registerFormSection" style="display: none;">
             <h2>Kayıt Ol</h2>
-            
             <div class="input-group">
                 <input type="text" id="regUsername" placeholder="Kullanıcı Adı">
             </div>
-
             <div class="input-group">
                 <input type="email" id="regEmail" placeholder="Email Adresi">
             </div>
-            
             <div class="input-group">
                 <input type="password" id="regPassword" placeholder="Şifre (En az 6 karakter)">
                 <button type="button" class="toggle-password" onclick="togglePassword('regPassword')">👁️</button>
             </div>
-
             <div class="action-btns">
-                <button class="btn-main" onclick="registerUser()" style="background: #3b82f6;">
-                    Kayıt Ol ve Tamamla
-                </button>
+                <button class="btn-main" onclick="registerUser()" style="background: #3b82f6;">Kayıt Ol ve Tamamla</button>
             </div>
-
             <div class="back-link">
                 <a href="#" onclick="showLoginForm()">← Giriş Ekranına Dön</a>
             </div>
-
             <p id="reg-status"></p>
         </div>
     </div>
@@ -449,8 +529,8 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     <div class="card">
         <h1>Dark Order - Kontrol Paneli</h1>
         <div class="box">
-            <h2>Sunucu Hakkında</h2>
-            <p>Sunucumuz kesinlikle sanala ve Discord'a yeni başlayan kişiler içindir. Burada sanala olarak verdiğimiz konular çok abartı değil; burada tanışır ve keyifli vakit geçiririz. Sizler için birkaç şey ekledik. Eğer büyütmek istiyorsanız elbet fırsatınız olacak... Sunucuya kişi çekmeniz bizi mutlu eder.</p>
+            <h2>Sunucu & Bot Duyuruları</h2>
+            <p>Sunucumuz sanala ve Discord'a yeni başlayanlar içindir. Discord botlarımız (oto-tg-katilma vb.) ve duyurularımız için resmi sunucumuza katılmayı unutmayın! Keyifli vakit geçirmeniz dileğiyle.</p>
         </div>
         <div class="box">
             <h2>Kurallar</h2>
@@ -472,20 +552,41 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
                 <div class="tool">🆔 id-sorgu</div>
             </div>
         </div>
-
-        <!-- GENEL SOHBET ODA KISMI -->
+        
+        <!-- İLETİŞİM ALANI SEKMELERİ -->
         <div class="box">
-            <h2>Global Sohbet Odası</h2>
-            <div class="chat-box-container">
+            <div class="section-tabs">
+                <div class="tab-btn active" id="tabChatBtn" onclick="switchTab('chat')">Genel Sohbet</div>
+                <div class="tab-btn" id="tabSsBtn" onclick="switchTab('ss')">Abone SS Odası</div>
+            </div>
+
+            <!-- GENEL SOHBET ALANI -->
+            <div class="chat-box-container" id="chatSectionContainer">
+                <button class="expand-btn" onclick="toggleExpand('chatSectionContainer')" title="Büyüt / Küçült">🗖</button>
+                <h2>Global Sohbet Odası</h2>
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input-area">
-                    <!-- Galeri / Medya Seçme Butonu -->
-                    <label class="gallery-btn-label" title="Fotoğraf veya Video Seç">
+                    <label class="gallery-btn-label" title="Görsel / Video Seç">
                         🖼️
-                        <input type="file" id="mediaInput" accept="image/*,video/*" onchange="sendMediaFile(event)">
+                        <input type="file" accept="image/*,video/*" onchange="sendMediaFile(event, 'chat')">
                     </label>
-                    <input type="text" id="chatInput" placeholder="Mesaj yaz..." onkeypress="checkEnter(event)">
-                    <button class="send-btn" onclick="sendMessage()">Gönder</button>
+                    <input type="text" id="chatInput" placeholder="Mesaj yaz..." onkeypress="checkEnter(event, 'chat')">
+                    <button class="send-btn" onclick="sendMessage('chat')">Gönder</button>
+                </div>
+            </div>
+
+            <!-- ABONE SS ODASI -->
+            <div class="chat-box-container" id="ssSectionContainer" style="display: none;">
+                <button class="expand-btn" onclick="toggleExpand('ssSectionContainer')" title="Büyüt / Küçült">🗖</button>
+                <h2>Abone SS Odası (Sadece Ekran Görüntüleri)</h2>
+                <div class="chat-messages" id="ssMessages"></div>
+                <div class="chat-input-area">
+                    <label class="gallery-btn-label" title="SS Seç ve Gönder">
+                        📸
+                        <input type="file" accept="image/*,video/*" onchange="sendMediaFile(event, 'ss')">
+                    </label>
+                    <input type="text" id="ssInput" placeholder="SS ile ilgili açıklama yaz..." onkeypress="checkEnter(event, 'ss')">
+                    <button class="send-btn" onclick="sendMessage('ss')">Gönder</button>
                 </div>
             </div>
         </div>
@@ -518,13 +619,12 @@ const db = firebase.database();
 
 auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {});
 
+// Belirttiğin e-postalar admin yetkili yapıldı:
+const ADMIN_EMAILS = ["Semirliefe801@gmail.com", "semirliefe808@gmail.com"]; 
+
 function togglePassword(fieldId) {
     let passInput = document.getElementById(fieldId);
-    if (passInput.type === "password") {
-        passInput.type = "text";
-    } else {
-        passInput.type = "password";
-    }
+    passInput.type = passInput.type === "password" ? "text" : "password";
 }
 
 function showRegisterForm() {
@@ -544,10 +644,26 @@ auth.onAuthStateChanged((user) => {
     let mainContent = document.getElementById('mainContent');
     
     if (user) {
+        db.ref('bans/' + user.uid).once('value', (snapshot) => {
+            if (snapshot.exists()) {
+                alert("Bu sunucudan uzaklaştırıldın!");
+                auth.signOut();
+                return;
+            }
+        });
+
         authWrapper.style.display = 'none';
         mainContent.style.display = 'flex';
         let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
         document.getElementById('welcomeUser').innerText = "👤 " + displayName;
+
+        // Admin kontrolü
+        if (ADMIN_EMAILS.includes(user.email)) {
+            document.getElementById('adminMenuBtn').style.display = 'block';
+            loadUserListForAdmin();
+        } else {
+            document.getElementById('adminMenuBtn').style.display = 'none';
+        }
 
         if (!welcomeLogged) {
             welcomeLogged = true;
@@ -558,10 +674,12 @@ auth.onAuthStateChanged((user) => {
             });
         }
         
-        loadChatMessages();
+        loadMessages('chat', 'chatMessages');
+        loadMessages('ss', 'ssMessages');
     } else {
         authWrapper.style.display = 'flex';
         mainContent.style.display = 'none';
+        document.getElementById('adminMenuBtn').style.display = 'none';
         welcomeLogged = false;
     }
 });
@@ -577,14 +695,7 @@ function loginUser() {
         return;
     }
 
-    status.style.color = '#8b9bb4';
-    status.innerText = 'Giriş yapılıyor...';
-
     auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-            status.style.color = '#10b981';
-            status.innerText = 'Giriş başarılı!';
-        })
         .catch((error) => {
             status.style.color = '#ef4444';
             status.innerText = "Hata: " + error.message;
@@ -608,18 +719,9 @@ function registerUser() {
         return;
     }
 
-    status.style.color = '#8b9bb4';
-    status.innerText = 'Hesap oluşturuluyor...';
-
     auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            return userCredential.user.updateProfile({
-                displayName: username
-            });
-        })
-        .then(() => {
-            status.style.color = '#10b981';
-            status.innerText = 'Kayıt başarılı! Yönlendiriliyorsunuz...';
+            return userCredential.user.updateProfile({ displayName: username });
         })
         .catch((error) => {
             status.style.color = '#ef4444';
@@ -629,31 +731,70 @@ function registerUser() {
 
 function forgotPassword() {
     let email = document.getElementById('loginEmail').value.trim();
-    let status = document.getElementById('auth-status');
-    
-    if(!email) {
-        status.style.color = '#ef4444';
-        status.innerText = 'Lütfen önce e-posta adresinizi yazın!';
-        return;
+    if(!email) { alert('Önce e-posta yazın!'); return; }
+    auth.sendPasswordResetEmail(email).then(() => alert('Sıfırlama bağlantısı gönderildi!'));
+}
+
+function logoutUser() { auth.signOut(); }
+
+function switchTab(tab) {
+    let chatBox = document.getElementById('chatSectionContainer');
+    let ssBox = document.getElementById('ssSectionContainer');
+    let chatBtn = document.getElementById('tabChatBtn');
+    let ssBtn = document.getElementById('tabSsBtn');
+
+    if (tab === 'chat') {
+        chatBox.style.display = 'block';
+        ssBox.style.display = 'none';
+        chatBtn.className = 'tab-btn active';
+        ssBtn.className = 'tab-btn';
+    } else {
+        chatBox.style.display = 'none';
+        ssBox.style.display = 'block';
+        chatBtn.className = 'tab-btn';
+        ssBtn.className = 'tab-btn active';
     }
+}
 
-    auth.sendPasswordResetEmail(email)
-        .then(() => {
-            status.style.color = '#10b981';
-            status.innerText = 'Şifre sıfırlama bağlantısı e-postanıza gönderildi!';
-        })
-        .catch((error) => {
-            status.style.color = '#ef4444';
-            status.innerText = "Hata: " + error.message;
+function toggleExpand(containerId) {
+    let container = document.getElementById(containerId);
+    container.classList.toggle('expanded');
+}
+
+function toggleAdminDrawer() {
+    document.getElementById('adminDrawer').classList.toggle('open');
+}
+
+function loadUserListForAdmin() {
+    let banList = document.getElementById('banList');
+    db.ref('chat').limitToLast(15).on('value', (snapshot) => {
+        let activeUsers = {};
+        snapshot.forEach(child => {
+            let val = child.val();
+            if (val.user && val.user !== "Sistem") {
+                activeUsers[val.user] = val.uid || val.user;
+            }
         });
+        banList.innerHTML = "";
+        for (let name in activeUsers) {
+            let div = document.createElement('div');
+            div.className = 'ban-item';
+            div.innerHTML = `<span>${name}</span> <button onclick="kickUser('${activeUsers[name]}')">At/Banla</button>`;
+            banList.appendChild(div);
+        }
+    });
 }
 
-function logoutUser() {
-    auth.signOut();
+function kickUser(userId) {
+    if (confirm("Bu kullanıcıyı panelden atmak/banlamak istiyor musun?")) {
+        db.ref('bans/' + userId).set(true);
+        alert("Kullanıcı uzaklaştırıldı.");
+    }
 }
 
-function sendMessage() {
-    let input = document.getElementById('chatInput');
+function sendMessage(type) {
+    let inputId = type === 'chat' ? 'chatInput' : 'ssInput';
+    let input = document.getElementById(inputId);
     let text = input.value.trim();
     let user = auth.currentUser;
     
@@ -661,7 +802,8 @@ function sendMessage() {
     
     let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
 
-    db.ref('chat').push({
+    db.ref(type).push({
+        uid: user.uid,
         user: displayName,
         text: text,
         type: "text"
@@ -670,14 +812,11 @@ function sendMessage() {
     input.value = "";
 }
 
-function checkEnter(event) {
-    if (event.key === "Enter") {
-        sendMessage();
-    }
+function checkEnter(event, type) {
+    if (event.key === "Enter") sendMessage(type);
 }
 
-// Dosya Seçilince Çalışacak Fonksiyon (Galeri Butonu)
-function sendMediaFile(event) {
+function sendMediaFile(event, type) {
     let file = event.target.files[0];
     let user = auth.currentUser;
     if (!file || !user) return;
@@ -688,21 +827,22 @@ function sendMediaFile(event) {
         let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
         let fileType = file.type.startsWith('video') ? 'video' : 'image';
 
-        db.ref('chat').push({
+        db.ref(type).push({
+            uid: user.uid,
             user: displayName,
             mediaUrl: fileDataUrl,
             type: fileType
         });
     };
     reader.readAsDataURL(file);
-    event.target.value = ""; // Sıfırla ki aynı dosya tekrar seçilebilsin
+    event.target.value = "";
 }
 
-function loadChatMessages() {
-    let chatMessages = document.getElementById('chatMessages');
+function loadMessages(dbPath, elementId) {
+    let container = document.getElementById(elementId);
     
-    db.ref('chat').limitToLast(30).on('value', (snapshot) => {
-        chatMessages.innerHTML = "";
+    db.ref(dbPath).limitToLast(30).on('value', (snapshot) => {
+        container.innerHTML = "";
         snapshot.forEach((childSnapshot) => {
             let data = childSnapshot.val();
             let msgDiv = document.createElement('div');
@@ -712,7 +852,7 @@ function loadChatMessages() {
                 msgDiv.innerText = data.text;
             } else if (data.type === "image") {
                 msgDiv.className = "chat-message";
-                msgDiv.innerHTML = `<b>${data.user}:</b><br><img src="${data.mediaUrl}" alt="Fotoğraf">`;
+                msgDiv.innerHTML = `<b>${data.user}:</b><br><img src="${data.mediaUrl}" alt="Görsel">`;
             } else if (data.type === "video") {
                 msgDiv.className = "chat-message";
                 msgDiv.innerHTML = `<b>${data.user}:</b><br><video controls><source src="${data.mediaUrl}"></video>`;
@@ -721,12 +861,13 @@ function loadChatMessages() {
                 msgDiv.innerHTML = `<b>${data.user}:</b> ${data.text}`;
             }
             
-            chatMessages.appendChild(msgDiv);
+            container.appendChild(msgDiv);
         });
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        container.scrollTop = container.scrollHeight;
     });
 }
 </script>
 
 </body>
 </html>
+
