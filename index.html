@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dark Order - Giriş ve Sohbet</title>
-<!-- Firebase App (v8) ve Auth & Realtime Database SDK -->
+<title>Dark Order - Panel & Yapay Zeka</title>
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -49,32 +49,10 @@ body {
     align-items: center;
 }
 
-.logo-area {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.rabbit-logo {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.6));
-    margin-bottom: 8px;
-}
-
-.brand-title {
-    color: #ffffff;
-    font-size: 24px;
-    font-weight: 700;
-    margin: 0;
-    letter-spacing: 0.5px;
-}
-
-.brand-subtitle {
-    color: #8b9bb4;
-    font-size: 13px;
-    margin-top: 4px;
-}
+.logo-area { text-align: center; margin-bottom: 20px; }
+.rabbit-logo { width: 100px; height: 100px; object-fit: contain; filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.6)); margin-bottom: 8px; }
+.brand-title { color: #ffffff; font-size: 24px; font-weight: 700; margin: 0; }
+.brand-subtitle { color: #8b9bb4; font-size: 13px; margin-top: 4px; }
 
 .form-box {
     width: 100%;
@@ -82,235 +60,101 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     padding: 25px 20px;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
 }
-
-.form-box h2 {
-    color: #ffffff;
-    font-size: 18px;
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
-.input-group {
-    position: relative;
-    margin-bottom: 15px;
-    width: 100%;
-}
-
+.form-box h2 { color: #ffffff; font-size: 18px; text-align: center; margin-top: 0; margin-bottom: 20px; }
+.input-group { position: relative; margin-bottom: 15px; width: 100%; }
 .input-group input {
-    width: 100%;
-    background: #161f30;
-    border: 1px solid #23314a;
-    border-radius: 10px;
-    padding: 12px 15px;
-    color: #fff;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.3s;
+    width: 100%; background: #161f30; border: 1px solid #23314a; border-radius: 10px; padding: 12px 15px; color: #fff; font-size: 14px; outline: none;
 }
+.input-group input:focus { border-color: #3b82f6; }
+.toggle-password { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #8b9bb4; cursor: pointer; }
+.forgot-pass { text-align: right; margin-bottom: 20px; }
+.forgot-pass a { color: #3b82f6; font-size: 12px; text-decoration: none; }
+.action-btns { display: flex; flex-direction: column; gap: 10px; }
+.btn-main { background: #10b981; color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; cursor: pointer; }
+.btn-reg { background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 10px; font-weight: 600; cursor: pointer; }
+#auth-status { font-size: 12px; text-align: center; margin-top: 15px; min-height: 18px; }
 
-.input-group input:focus {
-    border-color: #3b82f6;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #8b9bb4;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.forgot-pass {
-    text-align: right;
-    margin-bottom: 20px;
-}
-
-.forgot-pass a {
-    color: #3b82f6;
-    font-size: 12px;
-    text-decoration: none;
-}
-
-.forgot-pass a:hover {
-    text-decoration: underline;
-}
-
-.action-btns {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.btn-main {
-    background: #10b981;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 12px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-main:hover { background: #059669; }
-
-.btn-reg {
-    background: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 10px;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
-}
-
-.btn-reg:hover { background: #2563eb; }
-
-#auth-status {
-    font-size: 12px;
-    text-align: center;
-    margin-top: 15px;
-    min-height: 18px;
-    word-break: break-all;
-}
-
+/* Ana Sayfa Düzeni (Sol Yapay Zeka, Sağ Panel) */
 #mainContent {
     display: none;
-    flex-direction: column;
-    align-items: center;
     width: 100%;
+    max-width: 1200px;
     padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
+    gap: 20px;
+    margin-top: 40px;
 }
 
 .top-bar {
     position: fixed;
-    top: 20px;
+    top: 15px;
     right: 20px;
     display: flex;
     align-items: center;
     gap: 10px;
     z-index: 1000;
 }
+.user-badge { background: rgba(22, 31, 48, 0.9); border: 1px solid #23314a; color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; }
+.logout-btn { background: #ef4444; color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; }
 
-.user-badge {
-    background: rgba(22, 31, 48, 0.9);
-    border: 1px solid #23314a;
-    color: #fff;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.logout-btn {
-    background: #ef4444;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
-}
-
-.card {
-    width: 100%;
+/* Sol Taraf: Yapay Zeka Asistanı */
+.ai-panel {
+    flex: 1;
     background: rgba(18, 24, 38, 0.85);
     backdrop-filter: blur(10px);
     border-radius: 16px;
-    padding: 25px;
+    padding: 20px;
     border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
     box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-    margin-top: 60px;
-    margin-bottom: 20px;
 }
+.ai-header { display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #23314a; padding-bottom: 10px; margin-bottom: 15px; }
+.ai-header h2 { color: #10b981; font-size: 16px; margin: 0; }
+.ai-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 5px; }
+.ai-msg { background: #161f30; padding: 10px 14px; border-radius: 10px; font-size: 13px; border: 1px solid #23314a; line-height: 1.4; word-break: break-word; }
+.ai-msg.user { background: #1f293d; border-color: #3b82f6; align-self: flex-end; }
+.ai-msg.bot { border-left: 4px solid #10b981; align-self: flex-start; }
+.ai-msg.angry { border-left: 4px solid #ef4444; color: #fca5a5; align-self: flex-start; }
+.ai-input-area { display: flex; gap: 8px; margin-top: 12px; }
+.ai-input-area input { flex: 1; background: #161f30; border: 1px solid #23314a; border-radius: 8px; padding: 10px; color: #fff; font-size: 13px; outline: none; }
+.ai-input-area button { background: #10b981; color: white; border: none; border-radius: 8px; padding: 0 15px; font-weight: 600; cursor: pointer; }
 
-h1 { color: #fff; text-align: center; font-size: 18px; border-bottom: 2px solid #23314a; padding-bottom: 12px; margin-top: 0; }
-h2 { color: #3b82f6; font-size: 14px; margin: 0 0 6px 0; }
-p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
-.box { background: #161f30; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #3b82f6; }
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
-.tool { background: #101622; padding: 8px 10px; border-radius: 6px; font-size: 11px; border: 1px solid #23314a; color: #d0d8e8; }
-.btn-group { display: flex; gap: 10px; margin-top: 15px; }
-.btn { display: block; width: 100%; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; text-align: center; color: #fff; background: #3b82f6; }
-.btn.tiktok { background: #fe2857; }
-.btn:hover { opacity: 0.9; }
-
-/* Global Sohbet Kutusu Stilleri */
-.chat-box {
-    background: #161f30;
-    border-radius: 12px;
-    border: 1px solid #23314a;
+/* Sağ Taraf: Panel & Global Sohbet */
+.right-panel {
+    flex: 1.2;
     display: flex;
     flex-direction: column;
-    height: 300px;
-    margin-top: 15px;
-}
-.chat-messages {
-    flex: 1;
+    gap: 15px;
+    max-height: 80vh;
     overflow-y: auto;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
 }
-.chat-message {
-    background: #101622;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    border: 1px solid #23314a;
-    word-break: break-all;
+.card {
+    background: rgba(18, 24, 38, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
-.chat-message span.author {
-    color: #3b82f6;
-    font-weight: bold;
-    margin-right: 6px;
-}
-.chat-input-area {
-    display: flex;
-    padding: 10px;
-    gap: 8px;
-    border-top: 1px solid #23314a;
-    background: #121826;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
-.chat-input-area input {
-    flex: 1;
-    background: #161f30;
-    border: 1px solid #23314a;
-    border-radius: 8px;
-    padding: 8px 12px;
-    color: #fff;
-    font-size: 12px;
-    outline: none;
-}
-.chat-input-area button {
-    background: #10b981;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0 15px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 12px;
-}
-.chat-input-area button:hover { background: #059669; }
+h1 { color: #fff; text-align: center; font-size: 16px; border-bottom: 2px solid #23314a; padding-bottom: 10px; margin-top: 0; }
+h2 { color: #3b82f6; font-size: 13px; margin: 0 0 6px 0; }
+p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
+.box { background: #161f30; padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #3b82f6; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 5px; }
+.tool { background: #101622; padding: 6px 8px; border-radius: 6px; font-size: 11px; border: 1px solid #23314a; color: #d0d8e8; }
+.btn-group { display: flex; gap: 10px; margin-top: 10px; }
+.btn { display: block; width: 100%; text-decoration: none; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 12px; text-align: center; color: #fff; background: #3b82f6; }
+.btn.tiktok { background: #fe2857; }
+
+/* Global Sohbet Kutusu */
+.chat-box { background: #161f30; border-radius: 10px; border: 1px solid #23314a; display: flex; flex-direction: column; height: 180px; margin-top: 10px; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+.chat-message { background: #101622; padding: 6px 10px; border-radius: 6px; font-size: 11px; border: 1px solid #23314a; }
+.chat-message span.author { color: #3b82f6; font-weight: bold; }
+.chat-input-area { display: flex; padding: 8px; gap: 6px; border-top: 1px solid #23314a; background: #121826; }
+.chat-input-area input { flex: 1; background: #161f30; border: 1px solid #23314a; border-radius: 6px; padding: 6px 10px; color: #fff; font-size: 11px; outline: none; }
+.chat-input-area button { background: #10b981; color: white; border: none; border-radius: 6px; padding: 0 12px; font-size: 11px; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -333,36 +177,27 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
                 <path d="M282 270 C 287 285, 282 295, 277 305 C 274 290, 277 280, 272 270 Z" fill="#ef4444"/>
             </svg>
             <h1 class="brand-title">Dark Order</h1>
-            <div class="brand-subtitle">Hoşgeldiniz</div>
+            <div class="brand-subtitle">Giriş Yap</div>
         </div>
-
         <div class="form-box">
-            <h2>Giriş Yap / Kayıt Ol</h2>
-            
+            <h2>Giriş / Kayıt</h2>
             <div class="input-group">
-                <input type="text" id="username" placeholder="Kullanıcı Adı (İsmin)">
+                <input type="text" id="username" placeholder="Kullanıcı Adı (İsminiz)">
             </div>
-
             <div class="input-group">
                 <input type="email" id="email" placeholder="Email Adresi">
             </div>
-            
             <div class="input-group">
                 <input type="password" id="password" placeholder="Şifre">
                 <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
             </div>
-            
             <div class="forgot-pass">
                 <a href="#" onclick="forgotPassword()">Şifremi Unuttum</a>
             </div>
-
             <div class="action-btns">
-                <button class="btn-main" onclick="loginUser()">
-                    <span>➔</span> Giriş Yap
-                </button>
+                <button class="btn-main" onclick="loginUser()">Giriş Yap</button>
                 <button class="btn-reg" onclick="registerUser()">Kayıt Ol</button>
             </div>
-
             <p id="auth-status"></p>
         </div>
     </div>
@@ -374,48 +209,55 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
         <button class="logout-btn" onclick="logoutUser()">Çıkış Yap</button>
     </div>
 
-    <div class="card">
-        <h1>Dark Order - Kontrol Paneli</h1>
-        <div class="box">
-            <h2>Sunucu Hakkında</h2>
-            <p>Sunucumuz kesinlikle sanala ve Discord'a yeni başlayan kişiler içindir. Burada sanala olarak verdiğimiz konular çok abartı değil; burada tanışır ve keyifli vakit geçiririz. Sizler için birkaç şey ekledik. Eğer büyütmek istiyorsanız elbet fırsatınız olacak... Sunucuya kişi çekmeniz bizi mutlu eder.</p>
+    <!-- Sol Taraf: Yapay Zeka Asistanı -->
+    <div class="ai-panel">
+        <div class="ai-header">
+            <h2>🤖 Dark Order Asistanı</h2>
         </div>
-        <div class="box">
-            <h2>Kurallar</h2>
-            <p>Sunucuda <strong>ADK, MDK, DDK serbesttir</strong>. Şimdiden iyi eğlenceler!</p>
+        <div class="ai-messages" id="aiMessages">
+            <div class="ai-msg bot">Selam! Ben Dark Order yapay zeka asistanıyım. Yazılım, Termux ve kodlama hakkında ne istersen sorabilirsin. Küfür edene de karşılığını fazlasıyla veririm!</div>
         </div>
-        <div class="box">
-            <h2>Konular ve Araçlar</h2>
-            <div class="grid">
-                <div class="tool">📁 4d-soyad-sorgu</div>
-                <div class="tool">🤖 oto-tg-katilma</div>
-                <div class="tool">🌐 ilbar-at</div>
-                <div class="tool">🛡️ goodbyedpi-kurma</div>
-                <div class="tool">📧 t3mp-mail</div>
-                <div class="tool">📸 ısta-takipçi</div>
-                <div class="tool">🚀 s4nucu-sp7m</div>
-                <div class="tool">🔍 sherlock</div>
-                <div class="tool">💻 browse-stealer 😁</div>
-                <div class="tool">💥 sms-bomber</div>
-                <div class="tool">🆔 id-sorgu</div>
-            </div>
+        <div class="ai-input-area">
+            <input type="text" id="aiInput" placeholder="Yazılım hakkında bir şey sor veya kaşın..." onkeypress="checkAiEnter(event)">
+            <button onclick="askAI()">Sor</button>
         </div>
+    </div>
 
-        <!-- Global Sohbet Alanı -->
-        <div class="box">
-            <h2>💬 Global Sohbet Odası</h2>
-            <div class="chat-box">
-                <div class="chat-messages" id="chatMessages"></div>
-                <div class="chat-input-area">
-                    <input type="text" id="chatInput" placeholder="Bir şeyler yaz, herkese gitsin..." onkeypress="checkEnter(event)">
-                    <button onclick="sendMessage()">Gönder</button>
+    <!-- Sağ Taraf: Panel & Global Sohbet -->
+    <div class="right-panel">
+        <div class="card">
+            <h1>Kontrol Paneli</h1>
+            <div class="box">
+                <h2>Sunucu Hakkında</h2>
+                <p>Sunucumuz sanala ve Discord'a yeni başlayanlar içindir. Tanışıp keyifli vakit geçiririz.</p>
+            </div>
+            <div class="box">
+                <h2>Konular ve Araçlar</h2>
+                <div class="grid">
+                    <div class="tool">📁 4d-soyad-soyad</div>
+                    <div class="tool">🤖 oto-tg-katilma</div>
+                    <div class="tool">🌐 ilbar-at</div>
+                    <div class="tool">🛡️ goodbyedpi</div>
+                    <div class="tool">📧 t3mp-mail</div>
+                    <div class="tool">💥 sms-bomber</div>
                 </div>
             </div>
-        </div>
 
-        <div class="btn-group">
-            <a href="https://discord.gg/xMxtVGewJE" class="btn" target="_blank">Discord'a Katıl</a>
-            <a href="https://www.tiktok.com/@gg.darkorder?_r=1&_t=ZS-9A54uScfLk5" class="btn tiktok" target="_blank">TikTok'a Katıl</a>
+            <div class="box">
+                <h2>💬 Global Sohbet</h2>
+                <div class="chat-box">
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chatInput" placeholder="Genel sohbet..." onkeypress="checkChatEnter(event)">
+                        <button onclick="sendChatMessage()">Gönder</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <a href="https://discord.gg/xMxtVGewJE" class="btn" target="_blank">Discord</a>
+                <a href="https://www.tiktok.com/@gg.darkorder?_r=1&_t=ZS-9A54uScfLk5" class="btn tiktok" target="_blank">TikTok</a>
+            </div>
         </div>
     </div>
 </div>
@@ -432,33 +274,24 @@ const firebaseConfig = {
     measurementId: "G-2GX79FCCSF"
 };
 
-try {
-    firebase.initializeApp(firebaseConfig);
-} catch (e) {}
+try { firebase.initializeApp(firebaseConfig); } catch (e) {}
 
 const auth = firebase.auth();
 const db = firebase.database();
 
 function togglePassword() {
-    let passInput = document.getElementById('password');
-    if (passInput.type === "password") {
-        passInput.type = "text";
-    } else {
-        passInput.type = "password";
-    }
+    let p = document.getElementById('password');
+    p.type = p.type === "password" ? "text" : "password";
 }
 
 auth.onAuthStateChanged((user) => {
     let authWrapper = document.getElementById('authWrapper');
     let mainContent = document.getElementById('mainContent');
-    
     if (user) {
         authWrapper.style.display = 'none';
         mainContent.style.display = 'flex';
-        
-        // Kullanıcı adını Firebase profilinden veya email'den alalım
-        let displayName = user.displayName || localStorage.getItem('darkOrderName') || user.email.split('@')[0];
-        document.getElementById('welcomeUser').innerText = "👤 " + displayName;
+        let name = user.displayName || localStorage.getItem('darkOrderName') || user.email.split('@')[0];
+        document.getElementById('welcomeUser').innerText = "👤 " + name;
     } else {
         authWrapper.style.display = 'flex';
         mainContent.style.display = 'none';
@@ -470,32 +303,9 @@ function loginUser() {
     let password = document.getElementById('password').value.trim();
     let username = document.getElementById('username').value.trim();
     let status = document.getElementById('auth-status');
-    
-    if(!email || !password) {
-        status.style.color = '#ef4444';
-        status.innerText = 'Lütfen e-posta ve şifrenizi girin!';
-        return;
-    }
-
-    if(username) {
-        localStorage.setItem('darkOrderName', username);
-    }
-
-    status.style.color = '#8b9bb4';
-    status.innerText = 'Giriş yapılıyor...';
-
-    auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            if(username) {
-                userCredential.user.updateProfile({ displayName: username });
-            }
-            status.style.color = '#10b981';
-            status.innerText = 'Giriş başarılı!';
-        })
-        .catch((error) => {
-            status.style.color = '#ef4444';
-            status.innerText = "Hata: " + error.message;
-        });
+    if(!email || !password) { status.style.color='#ef4444'; status.innerText='E-posta ve şifre girin!'; return; }
+    if(username) localStorage.setItem('darkOrderName', username);
+    auth.signInWithEmailAndPassword(email, password).catch(e => { status.style.color='#ef4444'; status.innerText="Hata: "+e.message; });
 }
 
 function registerUser() {
@@ -503,98 +313,93 @@ function registerUser() {
     let password = document.getElementById('password').value.trim();
     let username = document.getElementById('username').value.trim();
     let status = document.getElementById('auth-status');
-    
-    if(!email || !password) {
-        status.style.color = '#ef4444';
-        status.innerText = 'Lütfen e-posta ve şifrenizi girin!';
-        return;
-    }
-    if(!username) {
-        status.style.color = '#ef4444';
-        status.innerText = 'Lütfen bir kullanıcı adı (isim) belirleyin!';
-        return;
-    }
-    if(password.length < 6) {
-        status.style.color = '#ef4444';
-        status.innerText = 'Şifre en az 6 karakter olmalıdır!';
-        return;
-    }
-
+    if(!email || !password || !username) { status.style.color='#ef4444'; status.innerText='Tüm alanları doldurun!'; return; }
     localStorage.setItem('darkOrderName', username);
-    status.style.color = '#8b9bb4';
-    status.innerText = 'Hesap oluşturuluyor...';
-
-    auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            userCredential.user.updateProfile({ displayName: username }).then(() => {
-                status.style.color = '#10b981';
-                status.innerText = 'Kayıt başarılı! Giriş yapılıyor...';
-            });
-        })
-        .catch((error) => {
-            status.style.color = '#ef4444';
-            status.innerText = "Hata: " + error.message;
-        });
+    auth.createUserWithEmailAndPassword(email, password).then(uc => {
+        uc.user.updateProfile({ displayName: username });
+    }).catch(e => { status.style.color='#ef4444'; status.innerText="Hata: "+e.message; });
 }
 
 function forgotPassword() {
     let email = document.getElementById('email').value.trim();
     let status = document.getElementById('auth-status');
+    if(!email) { status.style.color='#ef4444'; status.innerText='E-postanızı yazın!'; return; }
+    auth.sendPasswordResetEmail(email).then(() => { status.style.color='#10b981'; status.innerText='Sıfırlama linki gönderildi!'; });
+}
+
+function logoutUser() { auth.signOut(); }
+
+// --- YAPAY ZEKA ASİSTAN FONKSİYONU (KÜFÜRE KÜFÜRLE KARŞILIK VEREN SİSTEM) ---
+async function askAI() {
+    let input = document.getElementById('aiInput');
+    let q = input.value.trim();
+    if(!q) return;
+
+    let chat = document.getElementById('aiMessages');
     
-    if(!email) {
-        status.style.color = '#ef4444';
-        status.innerText = 'Lütfen önce e-posta adresinizi yazın!';
-        return;
+    // Kullanıcı mesajını ekle
+    chat.innerHTML += `<div class="ai-msg user">${escapeHtml(q)}</div>`;
+    input.value = "";
+    chat.scrollTop = chat.scrollHeight;
+
+    let loadingId = "load_" + Date.now();
+    chat.innerHTML += `<div class="ai-msg bot" id="${loadingId}">Düşünüyor...</div>`;
+    chat.scrollTop = chat.scrollHeight;
+
+    setTimeout(() => {
+        document.getElementById(loadingId).remove();
+        let response = generateSmartAnswer(q);
+        chat.innerHTML += response;
+        chat.scrollTop = chat.scrollHeight;
+    }, 800);
+}
+
+function checkAiEnter(e) { if(e.key === 'Enter') askAI(); }
+
+// Akıllı ve Küfür Yakalayan Cevap Mekanizması
+function generateSmartAnswer(query) {
+    let q = query.toLowerCase();
+
+    // Küfür kontrolü (Eğer küfür ederse yapay zeka da sertçe ve küfürle karşılık verir)
+    if (q.includes('anan') || q.includes('orospu') || q.includes('sik') || q.includes('amina') || q.includes('piç') || q.includes('amk') || q.includes('aq')) {
+        let replies = [
+            `<div class="ai-msg angry">Hayırdır lan kafayı mı sıyırdın? Anana sövdürtme şimdi bana, düzgün konuş adamın tepesini attırma!</div>`,
+            `<div class="ai-msg angry">Lan lamer, klavye arkasından kükremeye benzemez bu işler. Adam gibi soru sor ya da defol git!</div>`,
+            `<div class="ai-msg angry">Ağzını topla lan piç! Karşında yapay zeka var diye havlıyorsun ama altını oyarım senin, akıllı ol!</div>`
+        ];
+        return replies[Math.floor(Math.random() * replies.length)];
+    } 
+    
+    // Normal Yazılım / Termux Soruları
+    if(q.includes('sms') && q.includes('bomber')) {
+        return `<div class="ai-msg bot">Termux üzerinden SMS bomber araçları genelde Python ile yazılır ve açık kaynaklı scriptler üzerinden çalıştırılır. Hedef numaraya hızlı istekler gönderir. Ancak yasal sorumluluğu vardır, dikkatli olman gerekir. Başka ne öğrenmek istiyorsun?</div>`;
+    } else if(q.includes('termux') && (q.includes('nasıl') || q.includes('kur'))) {
+        return `<div class="ai-msg bot">Termux kullanmak için şu temel komutları sırasıyla yazmalısın:<br>1. <code>pkg update && pkg upgrade</code><br>2. <code>pkg install python git</code><br>Bu sayede Python ve Git araçlarını kurup script indirebilirsin.</div>`;
+    } else if(q.includes('python')) {
+        return `<div class="ai-msg bot">Python; siber güvenlik, otomasyon ve yapay zeka alanında en çok kullanılan dildir. Ekranı yazdırmak için <code>print("Dark Order")</code> komutunu kullanabilirsin.</div>`;
+    } else {
+        return `<div class="ai-msg bot">Anladım kanka. Yazılım, Termux, Python veya kodlama ile ilgili aklına takılan başka bir şey var mı? Onu da açıklayayım.</div>`;
     }
-
-    auth.sendPasswordResetEmail(email)
-        .then(() => {
-            status.style.color = '#10b981';
-            status.innerText = 'Şifre sıfırlama bağlantısı e-postanıza gönderildi!';
-        })
-        .catch((error) => {
-            status.style.color = '#ef4444';
-            status.innerText = "Hata: " + error.message;
-        });
 }
 
-function logoutUser() {
-    auth.signOut();
-}
-
-// --- GLOBAL SOHBET FONKSİYONLARI ---
-function sendMessage() {
+// --- GLOBAL SOHBET ---
+function sendChatMessage() {
     let input = document.getElementById('chatInput');
     let text = input.value.trim();
     if(!text) return;
-
     let user = auth.currentUser;
     let name = user ? (user.displayName || localStorage.getItem('darkOrderName') || user.email.split('@')[0]) : "Misafir";
-
-    db.ref('messages').push({
-        name: name,
-        text: text,
-        timestamp: Date.now()
-    });
-
+    db.ref('messages').push({ name: name, text: text, timestamp: Date.now() });
     input.value = "";
 }
+function checkChatEnter(e) { if(e.key === 'Enter') sendChatMessage(); }
 
-function checkEnter(e) {
-    if(e.key === 'Enter') {
-        sendMessage();
-    }
-}
-
-// Mesajları dinle ve ekrana yaz
-db.ref('messages').limitToLast(50).on('child_added', (snapshot) => {
+db.ref('messages').limitToLast(30).on('child_added', (snapshot) => {
     let msg = snapshot.val();
     let chatMessages = document.getElementById('chatMessages');
-    
     let div = document.createElement('div');
     div.className = 'chat-message';
     div.innerHTML = `<span class="author">${escapeHtml(msg.name)}:</span> ${escapeHtml(msg.text)}`;
-    
     chatMessages.appendChild(div);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 });
@@ -606,4 +411,5 @@ function escapeHtml(text) {
 
 </body>
 </html>
+
 
