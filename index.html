@@ -75,7 +75,6 @@ body {
 .btn-reg { background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 10px; font-weight: 600; cursor: pointer; }
 #auth-status { font-size: 12px; text-align: center; margin-top: 15px; min-height: 18px; }
 
-/* Ana Sayfa Düzeni (Sol Yapay Zeka, Sağ Panel) */
 #mainContent {
     display: none;
     width: 100%;
@@ -97,7 +96,6 @@ body {
 .user-badge { background: rgba(22, 31, 48, 0.9); border: 1px solid #23314a; color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; }
 .logout-btn { background: #ef4444; color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; }
 
-/* Sol Taraf: Yapay Zeka Asistanı */
 .ai-panel {
     flex: 1;
     background: rgba(18, 24, 38, 0.85);
@@ -121,7 +119,6 @@ body {
 .ai-input-area input { flex: 1; background: #161f30; border: 1px solid #23314a; border-radius: 8px; padding: 10px; color: #fff; font-size: 13px; outline: none; }
 .ai-input-area button { background: #10b981; color: white; border: none; border-radius: 8px; padding: 0 15px; font-weight: 600; cursor: pointer; }
 
-/* Sağ Taraf: Panel & Global Sohbet */
 .right-panel {
     flex: 1.2;
     display: flex;
@@ -147,7 +144,6 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 .btn { display: block; width: 100%; text-decoration: none; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 12px; text-align: center; color: #fff; background: #3b82f6; }
 .btn.tiktok { background: #fe2857; }
 
-/* Global Sohbet Kutusu */
 .chat-box { background: #161f30; border-radius: 10px; border: 1px solid #23314a; display: flex; flex-direction: column; height: 180px; margin-top: 10px; }
 .chat-messages { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
 .chat-message { background: #101622; padding: 6px 10px; border-radius: 6px; font-size: 11px; border: 1px solid #23314a; }
@@ -162,20 +158,6 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 <div id="authWrapper">
     <div class="auth-container">
         <div class="logo-area">
-            <svg class="rabbit-logo" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                <path d="M190 40C160 80 150 140 160 200C120 180 80 190 70 240C60 290 100 330 140 330C130 290 150 250 180 230C190 280 220 320 256 340C292 320 322 280 332 230C362 250 382 290 372 330C412 330 452 290 442 240C432 190 392 180 352 200C362 140 352 80 322 40C290 70 270 90 256 120C242 90 222 70 190 40Z" fill="#d1d5db"/>
-                <path d="M210 75C195 110 190 150 195 190C210 170 225 140 235 110C225 95 218 85 210 75Z" fill="#ef4444"/>
-                <path d="M302 75C317 110 322 150 317 190C302 170 287 140 277 110C287 95 294 85 302 75Z" fill="#ef4444"/>
-                <ellipse cx="256" cy="250" rx="75" ry="65" fill="#e5e7eb"/>
-                <polygon points="220,230 245,220 235,245" fill="#ef4444"/>
-                <polygon points="292,230 267,220 277,245" fill="#ef4444"/>
-                <circle cx="233" cy="233" r="4" fill="#000"/>
-                <circle cx="279" cy="233" r="4" fill="#000"/>
-                <ellipse cx="256" cy="265" rx="12" ry="8" fill="#ef4444"/>
-                <path d="M246 273 C 246 295, 250 310, 252 325 C 254 310, 258 295, 258 273 Z" fill="#ef4444"/>
-                <path d="M230 270 C 225 285, 230 295, 235 305 C 238 290, 235 280, 240 270 Z" fill="#ef4444"/>
-                <path d="M282 270 C 287 285, 282 295, 277 305 C 274 290, 277 280, 272 270 Z" fill="#ef4444"/>
-            </svg>
             <h1 class="brand-title">Dark Order</h1>
             <div class="brand-subtitle">Giriş Yap</div>
         </div>
@@ -218,7 +200,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
             <div class="ai-msg bot">Selam! Ben Dark Order yapay zeka asistanıyım. Yazılım, Termux ve kodlama hakkında ne istersen sorabilirsin. Küfür edene de karşılığını fazlasıyla veririm!</div>
         </div>
         <div class="ai-input-area">
-            <input type="text" id="aiInput" placeholder="Yazılım hakkında bir şey sor veya kaşın..." onkeypress="checkAiEnter(event)">
+            <input type="text" id="aiInput" placeholder="Yazılım veya Termux hakkında bir şeyler yaz..." onkeypress="checkAiEnter(event)">
             <button onclick="askAI()">Sor</button>
         </div>
     </div>
@@ -234,7 +216,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
             <div class="box">
                 <h2>Konular ve Araçlar</h2>
                 <div class="grid">
-                    <div class="tool">📁 4d-soyad-soyad</div>
+                    <div class="tool">📁 4d-soyad</div>
                     <div class="tool">🤖 oto-tg-katilma</div>
                     <div class="tool">🌐 ilbar-at</div>
                     <div class="tool">🛡️ goodbyedpi</div>
@@ -329,15 +311,13 @@ function forgotPassword() {
 
 function logoutUser() { auth.signOut(); }
 
-// --- YAPAY ZEKA ASİSTAN FONKSİYONU (KÜFÜRE KÜFÜRLE KARŞILIK VEREN SİSTEM) ---
+// --- YAPAY ZEKA ASİSTAN FONKSİYONU ---
 async function askAI() {
     let input = document.getElementById('aiInput');
     let q = input.value.trim();
     if(!q) return;
 
     let chat = document.getElementById('aiMessages');
-    
-    // Kullanıcı mesajını ekle
     chat.innerHTML += `<div class="ai-msg user">${escapeHtml(q)}</div>`;
     input.value = "";
     chat.scrollTop = chat.scrollHeight;
@@ -356,12 +336,12 @@ async function askAI() {
 
 function checkAiEnter(e) { if(e.key === 'Enter') askAI(); }
 
-// Akıllı ve Küfür Yakalayan Cevap Mekanizması
+// Geliştirilmiş Kelime Eşleştirme ve Küfür Koruması
 function generateSmartAnswer(query) {
     let q = query.toLowerCase();
 
-    // Küfür kontrolü (Eğer küfür ederse yapay zeka da sertçe ve küfürle karşılık verir)
-    if (q.includes('anan') || q.includes('orospu') || q.includes('sik') || q.includes('amina') || q.includes('piç') || q.includes('amk') || q.includes('aq')) {
+    // 1. Küfür ve Hakaret Kontrolü (Sert Karşılık)
+    if (q.includes('anan') || q.includes('orospu') || q.includes('sik') || q.includes('amina') || q.includes('piç') || q.includes('amk') || q.includes('aq') || q.includes('oç')) {
         let replies = [
             `<div class="ai-msg angry">Hayırdır lan kafayı mı sıyırdın? Anana sövdürtme şimdi bana, düzgün konuş adamın tepesini attırma!</div>`,
             `<div class="ai-msg angry">Lan lamer, klavye arkasından kükremeye benzemez bu işler. Adam gibi soru sor ya da defol git!</div>`,
@@ -370,15 +350,25 @@ function generateSmartAnswer(query) {
         return replies[Math.floor(Math.random() * replies.length)];
     } 
     
-    // Normal Yazılım / Termux Soruları
-    if(q.includes('sms') && q.includes('bomber')) {
-        return `<div class="ai-msg bot">Termux üzerinden SMS bomber araçları genelde Python ile yazılır ve açık kaynaklı scriptler üzerinden çalıştırılır. Hedef numaraya hızlı istekler gönderir. Ancak yasal sorumluluğu vardır, dikkatli olman gerekir. Başka ne öğrenmek istiyorsun?</div>`;
-    } else if(q.includes('termux') && (q.includes('nasıl') || q.includes('kur'))) {
+    // 2. SMS Bomber Soruları
+    if (q.includes('sms') || q.includes('bomber')) {
+        return `<div class="ai-msg bot">Termux üzerinden SMS bomber araçları genelde Python ile yazılır ve açık kaynaklı scriptler üzerinden çalıştırılır. Hedef numaraya hızlı istekler gönderir. Ancak yasal sorumluluğu vardır, dikkatli olman gerekir.</div>`;
+    } 
+    // 3. Termux Kurulum / Komut Soruları
+    else if (q.includes('termux') || q.includes('kur') || q.includes('komut')) {
         return `<div class="ai-msg bot">Termux kullanmak için şu temel komutları sırasıyla yazmalısın:<br>1. <code>pkg update && pkg upgrade</code><br>2. <code>pkg install python git</code><br>Bu sayede Python ve Git araçlarını kurup script indirebilirsin.</div>`;
-    } else if(q.includes('python')) {
+    } 
+    // 4. Python / Yazılım Soruları
+    else if (q.includes('python') || q.includes('kod') || q.includes('yazılım') || q.includes('program')) {
         return `<div class="ai-msg bot">Python; siber güvenlik, otomasyon ve yapay zeka alanında en çok kullanılan dildir. Ekranı yazdırmak için <code>print("Dark Order")</code> komutunu kullanabilirsin.</div>`;
-    } else {
-        return `<div class="ai-msg bot">Anladım kanka. Yazılım, Termux, Python veya kodlama ile ilgili aklına takılan başka bir şey var mı? Onu da açıklayayım.</div>`;
+    } 
+    // 5. Selamlama / Hal Hatır
+    else if (q.includes('selam') || q.includes('merhaba') || q.includes('naber')) {
+        return `<div class="ai-msg bot">Aleykümselam kanka! Dark Order asistanı aktif. Sana hangi konuda yardım edeyim? Termux, Python veya siber güvenlikten sorabilirsin.</div>`;
+    }
+    // 6. Eşleşmeyen Diğer Durumlar İçin Genel Bilgilendirme
+    else {
+        return `<div class="ai-msg bot">"<b>${escapeHtml(query)}</b>" hakkında şunu söyleyebilirim: Bu tür işlemleri yaparken dikkatli olman ve altyapıyı iyi anlaman gerekir. Termux, Python komutları veya siber güvenlik hakkında daha spesifik bir şey sorarsan detaylıca anlatırım!</div>`;
     }
 }
 
@@ -411,5 +401,4 @@ function escapeHtml(text) {
 
 </body>
 </html>
-
 
