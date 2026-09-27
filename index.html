@@ -211,61 +211,65 @@ body {
     padding: 20px 10px;
 }
 
-/* Üst Sağ Butonlar */
+/* Üst Sağ Butonlar ve Admin Butonu */
 .top-bar {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 15px;
+    right: 15px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     z-index: 1000;
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
-/* Sol Üç Çizgi Admin Menüsü Butonu */
-.admin-menu-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background: rgba(22, 31, 48, 0.9);
-    border: 1px solid #23314a;
+.admin-panel-btn {
+    background: #3b82f6;
     color: #fff;
+    border: none;
     padding: 8px 12px;
     border-radius: 8px;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 12px;
     cursor: pointer;
-    z-index: 1000;
     display: none;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
 }
-.admin-menu-btn:hover { background: #3b82f6; }
+.admin-panel-btn:hover { background: #2563eb; }
 
 /* Admin Paneli Çekmecesi */
 .admin-drawer {
     position: fixed;
     top: 0;
-    left: -300px;
-    width: 280px;
+    left: -320px;
+    width: 300px;
     height: 100%;
     background: #0d111a;
     border-right: 1px solid #23314a;
-    z-index: 1001;
+    z-index: 2001;
     transition: left 0.3s ease;
     padding: 20px;
-    box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+    box-shadow: 5px 0 20px rgba(0,0,0,0.8);
+    overflow-y: auto;
 }
 .admin-drawer.open { left: 0; }
 .admin-drawer h3 { color: #ef4444; font-size: 16px; margin-top: 0; border-bottom: 1px solid #23314a; padding-bottom: 10px; }
-.ban-list { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; max-height: 80vh; overflow-y: auto; }
-.ban-item { background: #161f30; padding: 8px; border-radius: 6px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
-.ban-item button { background: #ef4444; border: none; color: white; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+.ban-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+.ban-item { background: #161f30; padding: 10px; border-radius: 8px; font-size: 11px; display: flex; flex-direction: column; gap: 6px; border: 1px solid #23314a; }
+.ban-item-actions { display: flex; gap: 5px; flex-wrap: wrap; }
+.ban-item button { border: none; color: white; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: 600; }
+.btn-mute-1m { background: #f59e0b; }
+.btn-mute-1d { background: #d97706; }
+.btn-ban { background: #ef4444; }
 
 .user-badge {
     background: rgba(22, 31, 48, 0.9);
     border: 1px solid #23314a;
     color: #fff;
-    padding: 8px 14px;
+    padding: 8px 10px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
 }
 
@@ -273,10 +277,10 @@ body {
     background: #ef4444;
     color: #fff;
     border: none;
-    padding: 8px 12px;
+    padding: 8px 10px;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
 }
 
@@ -288,7 +292,7 @@ body {
     padding: 20px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-    margin-top: 20px;
+    margin-top: 60px;
 }
 
 h1 { color: #fff; text-align: center; font-size: 18px; border-bottom: 2px solid #23314a; padding-bottom: 12px; margin-top: 0; }
@@ -392,6 +396,11 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     font-weight: 600;
 }
 
+.chat-message.everyone-msg {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+}
+
 .chat-message img, .chat-message video {
     max-width: 100%;
     border-radius: 6px;
@@ -442,15 +451,27 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     cursor: pointer;
 }
 .chat-input-area button.send-btn:hover { background: #059669; }
+
+.everyone-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-weight: 600;
+    font-size: 11px;
+    cursor: pointer;
+    display: none;
+}
+.everyone-btn:hover { background: #dc2626; }
 </style>
 </head>
 <body>
 
-<!-- Admin Yetki Menüsü (Sol Üç Çizgi) -->
-<button class="admin-menu-btn" id="adminMenuBtn" onclick="toggleAdminDrawer()">☰</button>
+<!-- Admin Yetki Çekmecesi -->
 <div class="admin-drawer" id="adminDrawer">
-    <h3>Admin Yönetimi</h3>
-    <p style="font-size: 11px; color: #8b9bb4;">Trolleyen kullanıcıları buradan banlayabilir/atabilirsin:</p>
+    <h3>Admin Yönetim Paneli</h3>
+    <p style="font-size: 11px; color: #8b9bb4;">Kullanıcılara mute atabilir veya banlayabilirsin:</p>
     <div class="ban-list" id="banList"></div>
     <button onclick="toggleAdminDrawer()" style="margin-top: 15px; width: 100%; background: #23314a; border: none; color: #fff; padding: 8px; border-radius: 6px; cursor: pointer;">Kapat</button>
 </div>
@@ -522,6 +543,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 
 <div id="mainContent">
     <div class="top-bar">
+        <button class="admin-panel-btn" id="adminPanelBtn" onclick="toggleAdminDrawer()">Admin Yönetim Paneli</button>
         <div class="user-badge" id="welcomeUser">Hoş geldin</div>
         <button class="logout-btn" onclick="logoutUser()">Çıkış Yap</button>
     </div>
@@ -566,6 +588,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
                 <h2>Global Sohbet Odası</h2>
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input-area">
+                    <button class="everyone-btn" id="everyoneBtn" onclick="sendEveryoneMessage()">@everyone</button>
                     <label class="gallery-btn-label" title="Görsel / Video Seç">
                         🖼️
                         <input type="file" accept="image/*,video/*" onchange="sendMediaFile(event, 'chat')">
@@ -619,7 +642,6 @@ const db = firebase.database();
 
 auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {});
 
-// Belirttiğin e-postalar admin yetkili yapıldı:
 const ADMIN_EMAILS = ["Semirliefe801@gmail.com", "semirliefe808@gmail.com"]; 
 
 function togglePassword(fieldId) {
@@ -644,11 +666,22 @@ auth.onAuthStateChanged((user) => {
     let mainContent = document.getElementById('mainContent');
     
     if (user) {
-        db.ref('bans/' + user.uid).once('value', (snapshot) => {
-            if (snapshot.exists()) {
-                alert("Bu sunucudan uzaklaştırıldın!");
-                auth.signOut();
-                return;
+        // Mute veya Ban kontrolü
+        db.ref('punishments/' + user.uid).once('value', (snapshot) => {
+            let pData = snapshot.val();
+            if (pData) {
+                if (pData.type === 'ban') {
+                    alert("Bu sunucudan uzaklaştırıldın!");
+                    auth.signOut();
+                    return;
+                } else if (pData.type === 'mute') {
+                    if (Date.now() < pData.expireTime) {
+                        let kalan Dakika = Math.ceil((pData.expireTime - Date.now()) / 60000);
+                        alert(`Mutelisiniz! Kalan süre yaklaşık ${kalanDakika} dakika.`);
+                    } else {
+                        db.ref('punishments/' + user.uid).remove();
+                    }
+                }
             }
         });
 
@@ -659,10 +692,12 @@ auth.onAuthStateChanged((user) => {
 
         // Admin kontrolü
         if (ADMIN_EMAILS.includes(user.email)) {
-            document.getElementById('adminMenuBtn').style.display = 'block';
+            document.getElementById('adminPanelBtn').style.display = 'inline-block';
+            document.getElementById('everyoneBtn').style.display = 'inline-block';
             loadUserListForAdmin();
         } else {
-            document.getElementById('adminMenuBtn').style.display = 'none';
+            document.getElementById('adminPanelBtn').style.display = 'none';
+            document.getElementById('everyoneBtn').style.display = 'none';
         }
 
         if (!welcomeLogged) {
@@ -679,7 +714,8 @@ auth.onAuthStateChanged((user) => {
     } else {
         authWrapper.style.display = 'flex';
         mainContent.style.display = 'none';
-        document.getElementById('adminMenuBtn').style.display = 'none';
+        document.getElementById('adminPanelBtn').style.display = 'none';
+        document.getElementById('everyoneBtn').style.display = 'none';
         welcomeLogged = false;
     }
 });
@@ -767,28 +803,42 @@ function toggleAdminDrawer() {
 
 function loadUserListForAdmin() {
     let banList = document.getElementById('banList');
-    db.ref('chat').limitToLast(15).on('value', (snapshot) => {
+    db.ref('chat').limitToLast(20).on('value', (snapshot) => {
         let activeUsers = {};
         snapshot.forEach(child => {
             let val = child.val();
-            if (val.user && val.user !== "Sistem") {
-                activeUsers[val.user] = val.uid || val.user;
+            if (val.user && val.user !== "Sistem" && val.uid) {
+                activeUsers[val.user] = val.uid;
             }
         });
         banList.innerHTML = "";
         for (let name in activeUsers) {
+            let uid = activeUsers[name];
             let div = document.createElement('div');
             div.className = 'ban-item';
-            div.innerHTML = `<span>${name}</span> <button onclick="kickUser('${activeUsers[name]}')">At/Banla</button>`;
+            div.innerHTML = `
+                <span><b>${name}</b></span>
+                <div class="ban-item-actions">
+                    <button class="btn-mute-1m" onclick="punishUser('${uid}', 'mute', 1)">1 Dk Mute</button>
+                    <button class="btn-mute-1d" onclick="punishUser('${uid}', 'mute', 1440)">1 Gün Mute</button>
+                    <button class="btn-ban" onclick="punishUser('${uid}', 'ban', 0)">Banla</button>
+                </div>
+            `;
             banList.appendChild(div);
         }
     });
 }
 
-function kickUser(userId) {
-    if (confirm("Bu kullanıcıyı panelden atmak/banlamak istiyor musun?")) {
-        db.ref('bans/' + userId).set(true);
-        alert("Kullanıcı uzaklaştırıldı.");
+function punishUser(userId, type, durationMinutes) {
+    if (type === 'ban') {
+        if (confirm("Bu kullanıcıyı kalıcı olarak banlamak istiyor musun?")) {
+            db.ref('punishments/' + userId).set({ type: 'ban' });
+            alert("Kullanıcı banlandı.");
+        }
+    } else if (type === 'mute') {
+        let expireTime = Date.now() + (durationMinutes * 60 * 1000);
+        db.ref('punishments/' + userId).set({ type: 'mute', expireTime: expireTime });
+        alert(`Kullanıcıya ${durationMinutes === 1 ? '1 dakika' : '1 gün'} mute atıldı.`);
     }
 }
 
@@ -799,14 +849,41 @@ function sendMessage(type) {
     let user = auth.currentUser;
     
     if (!text || !user) return;
+
+    db.ref('punishments/' + user.uid).once('value', (snapshot) => {
+        let pData = snapshot.val();
+        if (pData && pData.type === 'mute' && Date.now() < pData.expireTime) {
+            alert("Mutede olduğunuz için mesaj gönderemezsiniz!");
+            return;
+        }
+
+        let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
+
+        db.ref(type).push({
+            uid: user.uid,
+            user: displayName,
+            text: text,
+            type: "text"
+        });
+
+        input.value = "";
+    });
+}
+
+function sendEveryoneMessage() {
+    let input = document.getElementById('chatInput');
+    let text = input.value.trim();
+    let user = auth.currentUser;
+    if (!user || !ADMIN_EMAILS.includes(user.email)) return;
     
+    let msgText = text ? "@everyone " + text : "@everyone Dikkat! Yeni duyuru var.";
     let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
 
-    db.ref(type).push({
+    db.ref('chat').push({
         uid: user.uid,
-        user: displayName,
-        text: text,
-        type: "text"
+        user: displayName + " (ADMIN)",
+        text: msgText,
+        type: "everyone"
     });
 
     input.value = "";
@@ -821,21 +898,29 @@ function sendMediaFile(event, type) {
     let user = auth.currentUser;
     if (!file || !user) return;
 
-    let reader = new FileReader();
-    reader.onload = function(e) {
-        let fileDataUrl = e.target.result;
-        let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
-        let fileType = file.type.startsWith('video') ? 'video' : 'image';
+    db.ref('punishments/' + user.uid).once('value', (snapshot) => {
+        let pData = snapshot.val();
+        if (pData && pData.type === 'mute' && Date.now() < pData.expireTime) {
+            alert("Mutede olduğunuz için dosya gönderemezsiniz!");
+            return;
+        }
 
-        db.ref(type).push({
-            uid: user.uid,
-            user: displayName,
-            mediaUrl: fileDataUrl,
-            type: fileType
-        });
-    };
-    reader.readAsDataURL(file);
-    event.target.value = "";
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            let fileDataUrl = e.target.result;
+            let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
+            let fileType = file.type.startsWith('video') ? 'video' : 'image';
+
+            db.ref(type).push({
+                uid: user.uid,
+                user: displayName,
+                mediaUrl: fileDataUrl,
+                type: fileType
+            });
+        };
+        reader.readAsDataURL(file);
+        event.target.value = "";
+    });
 }
 
 function loadMessages(dbPath, elementId) {
@@ -850,6 +935,9 @@ function loadMessages(dbPath, elementId) {
             if (data.type === "system") {
                 msgDiv.className = "chat-message system-msg";
                 msgDiv.innerText = data.text;
+            } else if (data.type === "everyone") {
+                msgDiv.className = "chat-message everyone-msg";
+                msgDiv.innerHTML = `<b>🔔 ${data.user}:</b> <span style="color:#f87171; font-weight:bold;">${data.text}</span>`;
             } else if (data.type === "image") {
                 msgDiv.className = "chat-message";
                 msgDiv.innerHTML = `<b>${data.user}:</b><br><img src="${data.mediaUrl}" alt="Görsel">`;
@@ -870,4 +958,5 @@ function loadMessages(dbPath, elementId) {
 
 </body>
 </html>
+
 
