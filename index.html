@@ -110,9 +110,8 @@ p{font-size:12px;line-height:1.4;color:#ccc;margin:0}
 </div>
 
 <script>
-// BURAYA FIREBASE'DEN KOPYALADIĞIN GERÇEK API KEY'İ YAPIŞTIR
 const firebaseConfig = {
-    apiKey: "BURAYA_GERCEK_API_KEY_DEGERINI_YAZ",
+    apiKey: "AIzaSyAB-TgSqlPEMHYU3DQCdDC5eDxdpi7Dnr8",
     authDomain: "dark-order-chat.firebaseapp.com",
     databaseURL: "https://dark-order-chat-default-rtdb.firebaseio.com/",
     projectId: "dark-order-chat",
@@ -123,9 +122,7 @@ const firebaseConfig = {
 
 try {
     firebase.initializeApp(firebaseConfig);
-} catch (e) {
-    // Zaten başlatıldıysa yoksay
-}
+} catch (e) {}
 
 const db = firebase.database();
 const auth = firebase.auth();
@@ -171,7 +168,7 @@ function register() {
     auth.createUserWithEmailAndPassword(email, password)
         .then(() => {
             status.style.color = '#43b581';
-            status.innerText = 'Kayıt başarılı! Giriş yapılıyor...';
+            status.innerText = 'Kayıt başarılı!';
         })
         .catch((error) => {
             status.style.color = '#ff5555';
@@ -236,4 +233,3 @@ function loadMessages() {
 
 </body>
 </html>
-
