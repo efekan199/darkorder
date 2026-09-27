@@ -110,17 +110,18 @@ p{font-size:12px;line-height:1.4;color:#ccc;margin:0}
 </div>
 
 <script>
-// Dark Order Proje Yapılandırması
+// Dark Order Proje Yapılandırması (Tam Eşleşme)
 const firebaseConfig = {
-    apiKey: "AIzaSyD-DarkOrderAppKeyPlaceholderForAuth",
+    apiKey: "AIzaSyC...", // Projendeki apiKey'i buraya yazabilirsin, veya aşağıdaki otomatik yönlendirme çalışacaktır.
     authDomain: "dark-order-chat.firebaseapp.com",
     databaseURL: "https://dark-order-chat-default-rtdb.firebaseio.com/",
     projectId: "dark-order-chat",
     storageBucket: "dark-order-chat.appspot.com",
-    messagingSenderId: "987654321",
-    appId: "1:987654321:web:darkorder"
+    messagingSenderId: "306270242208",
+    appId: "1:306270242208:web:2972bd723bed53db4a50c5"
 };
 
+// Eğer apiKey alanında nokta yerine gerçek anahtarın olsun istersen, o sayfadaki config kodunu kopyalayıp buraya yapıştırman yeterlidir.
 try {
     firebase.initializeApp(firebaseConfig);
 } catch (e) {
@@ -236,4 +237,5 @@ function loadMessages() {
 
 </body>
 </html>
+
 
