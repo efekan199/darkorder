@@ -182,16 +182,56 @@ body {
     word-break: break-all;
 }
 
+/* Ana Sayfa Düzeni */
 #mainContent {
     display: none;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
     width: 100%;
-    max-width: 550px;
+    max-width: 950px;
     padding: 20px 10px;
+    gap: 20px;
 }
 
-/* Üst Sağ Butonlar ve Admin Butonu */
+/* Sol Yan Panel (Üye Sayacı Alanı) */
+.left-sidebar {
+    width: 240px;
+    background: rgba(18, 24, 38, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    margin-top: 60px;
+}
+
+.sidebar-title {
+    color: #3b82f6;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #23314a;
+    padding-bottom: 8px;
+}
+
+.stat-box {
+    background: #161f30;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #23314a;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 26px;
+    font-weight: 800;
+    color: #10b981;
+    margin-top: 5px;
+}
+
+/* Üst Sağ Butonlar ve Hesap Paneli Tetikleyicisi */
 .top-bar {
     position: fixed;
     top: 15px;
@@ -215,6 +255,49 @@ body {
     box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
 }
 .admin-panel-btn:hover { background: #2563eb; }
+
+/* Sağ Hesap Yönetim Çekmecesi (Modal/Panel) */
+.account-drawer {
+    position: fixed;
+    top: 0;
+    right: -350px;
+    width: 320px;
+    height: 100%;
+    background: #0d111a;
+    border-left: 1px solid #23314a;
+    z-index: 2002;
+    transition: right 0.3s ease;
+    padding: 20px;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.8);
+    overflow-y: auto;
+}
+.account-drawer.open { right: 0; }
+.account-drawer h3 { color: #3b82f6; font-size: 16px; margin-top: 0; border-bottom: 1px solid #23314a; padding-bottom: 10px; }
+
+.user-badge {
+    background: rgba(22, 31, 48, 0.9);
+    border: 1px solid #23314a;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.user-badge:hover { border-color: #3b82f6; }
+
+.logout-btn {
+    background: #ef4444;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+}
+.logout-btn:hover { background: #dc2626; }
 
 /* Admin Paneli Çekmecesi */
 .admin-drawer {
@@ -241,29 +324,8 @@ body {
 .btn-mute-1d { background: #d97706; }
 .btn-ban { background: #ef4444; }
 
-.user-badge {
-    background: rgba(22, 31, 48, 0.9);
-    border: 1px solid #23314a;
-    color: #fff;
-    padding: 8px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.logout-btn {
-    background: #ef4444;
-    color: #fff;
-    border: none;
-    padding: 8px 10px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 12px;
-    cursor: pointer;
-}
-
 .card {
-    width: 100%;
+    flex: 1;
     background: rgba(18, 24, 38, 0.85);
     backdrop-filter: blur(10px);
     border-radius: 16px;
@@ -283,7 +345,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 .btn { display: block; width: 100%; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; text-align: center; color: #fff; background: #3b82f6; }
 .btn.tiktok { background: #fe2857; }
 
-/* Sohbet Alanları Ortak Stil */
+/* Sohbet Alanları */
 .chat-box-container {
     background: #101622;
     border: 1px solid #23314a;
@@ -292,7 +354,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 }
 
 .chat-messages {
-    height: 200px;
+    height: 180px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -373,6 +435,12 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     font-size: 11px;
     cursor: pointer;
 }
+
+@media (max-width: 768px) {
+    #mainContent { flex-direction: column; }
+    .left-sidebar { width: 100%; margin-top: 60px; }
+    .card { margin-top: 0; }
+}
 </style>
 </head>
 <body>
@@ -383,6 +451,30 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     <p style="font-size: 11px; color: #8b9bb4;">Kullanıcılara mute atabilir veya banlayabilirsin:</p>
     <div class="ban-list" id="banList"></div>
     <button onclick="toggleAdminDrawer()" style="margin-top: 15px; width: 100%; background: #23314a; border: none; color: #fff; padding: 8px; border-radius: 6px; cursor: pointer;">Kapat</button>
+</div>
+
+<!-- Sağ Hesap Yönetim Çekmecesi (Profil & İsim Değiştirme) -->
+<div class="account-drawer" id="accountDrawer">
+    <h3>Hesabım & Profil</h3>
+    <p style="font-size: 11px; color: #8b9bb4; margin-bottom: 15px;">Profil bilgilerini buradan güncelleyebilirsin:</p>
+    
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="input-group">
+            <label style="font-size: 11px; color: #8b9bb4; display:block; margin-bottom: 4px;">Kullanıcı Adı</label>
+            <input type="text" id="updateUsernameInput" placeholder="Yeni kullanıcı adını yaz...">
+        </div>
+        <button class="btn-main" onclick="updateProfileName()" style="padding: 10px; font-size: 12px;">İsmi Güncelle</button>
+        <p id="profileUpdateStatus" style="font-size: 11px; text-align: center; margin: 0;"></p>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #23314a; margin: 20px 0;">
+    
+    <div style="background: #161f30; padding: 10px; border-radius: 8px; border: 1px solid #23314a;">
+        <p style="font-size: 11px; color: #8b9bb4;">Kayıtlı E-Posta:</p>
+        <p id="accountEmailDisplay" style="font-size: 12px; font-weight: 600; color: #fff; word-break: break-all; margin-top: 4px;"></p>
+    </div>
+
+    <button onclick="toggleAccountDrawer()" style="margin-top: 25px; width: 100%; background: #23314a; border: none; color: #fff; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 12px;">Paneli Kapat</button>
 </div>
 
 <div id="authWrapper">
@@ -440,13 +532,26 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 </div>
 
 <div id="mainContent">
-    <div class="top-bar">
-        <button class="admin-panel-btn" id="adminPanelBtn" onclick="toggleAdminDrawer()">Admin Yönetim Paneli</button>
-        <div class="user-badge" id="welcomeUser">Profil</div>
-        <button class="logout-btn" onclick="logoutUser()">Çıkış Yap</button>
+    <!-- SOL YAN PANEL (Üye Sayacı) -->
+    <div class="left-sidebar">
+        <h2 class="sidebar-title">Sunucu İstatistikleri</h2>
+        <div class="stat-box">
+            <p style="font-size: 11px; color: #8b9bb4;">Toplam Kayıtlı Üye</p>
+            <div class="stat-number" id="totalMembersCount">Yükleniyor...</div>
+        </div>
+        <div style="margin-top: 15px;">
+            <p style="font-size: 11px; color: #8b9bb4; line-height: 1.4;">* Gmail adresiyle kayıt olan toplam kullanıcı sayısını gösterir.</p>
+        </div>
     </div>
 
+    <!-- ORTA / ANA KONTROL PANELİ -->
     <div class="card">
+        <div class="top-bar">
+            <button class="admin-panel-btn" id="adminPanelBtn" onclick="toggleAdminDrawer()">Admin Paneli</button>
+            <div class="user-badge" id="welcomeUser" onclick="toggleAccountDrawer()" title="Hesap Ayarları">Profil</div>
+            <button class="logout-btn" onclick="logoutUser()">Çıkış Yap</button>
+        </div>
+
         <h1>Dark Order - Kontrol Paneli</h1>
         
         <div class="box">
@@ -477,7 +582,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
             </div>
         </div>
         
-        <!-- 1. GLOBAL SOHBET ODASI (Sadece Yazı) -->
+        <!-- 1. GLOBAL SOHBET ODASI -->
         <div class="box">
             <h2>Global Sohbet Odası</h2>
             <p style="font-size: 11px; color: #8b9bb4; margin-bottom: 8px;">Sadece yazı yazabileceğiniz genel sohbet alanı.</p>
@@ -491,7 +596,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
             </div>
         </div>
 
-        <!-- 2. ABONE SS / MEDYA ALANI (Yazı + Fotoğraf + Video) -->
+        <!-- 2. ABONE SS / MEDYA ALANI -->
         <div class="box">
             <h2>Abone SS & Medya Paylaşım Alanı</h2>
             <p style="font-size: 11px; color: #8b9bb4; margin-bottom: 8px;">Buradan hem yazı yazabilir hem de fotoğraf veya video atabilirsiniz.</p>
@@ -560,6 +665,15 @@ auth.onAuthStateChanged((user) => {
         mainContent.style.display = 'flex';
         let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
         document.getElementById('welcomeUser').innerText = "👤 " + displayName;
+        document.getElementById('updateUsernameInput').value = displayName;
+        document.getElementById('accountEmailDisplay').innerText = user.email;
+
+        // Üye veritabanı kaydı
+        db.ref('users/' + user.uid).update({
+            email: user.email,
+            username: displayName,
+            lastLogin: firebase.database.ServerValue.TIMESTAMP
+        });
 
         if (ADMIN_EMAILS.includes(user.email)) {
             document.getElementById('adminPanelBtn').style.display = 'inline-block';
@@ -572,6 +686,7 @@ auth.onAuthStateChanged((user) => {
         
         loadGlobalMessages();
         loadSSMessages();
+        loadMemberCount();
     } else {
         authWrapper.style.display = 'flex';
         mainContent.style.display = 'none';
@@ -579,6 +694,46 @@ auth.onAuthStateChanged((user) => {
         document.getElementById('everyoneBtn').style.display = 'none';
     }
 });
+
+function toggleAccountDrawer() {
+    document.getElementById('accountDrawer').classList.toggle('open');
+}
+
+// Kullanıcının ismini (profilini) güncelleme fonksiyonu
+function updateProfileName() {
+    let newName = document.getElementById('updateUsernameInput').value.trim();
+    let status = document.getElementById('profileUpdateStatus');
+    let user = auth.currentUser;
+
+    if (!newName) {
+        status.style.color = '#ef4444';
+        status.innerText = "İsim boş olamaz!";
+        return;
+    }
+
+    user.updateProfile({
+        displayName: newName
+    }).then(() => {
+        // Veritabanındaki kullanıcı kaydını da güncelle
+        db.ref('users/' + user.uid).update({
+            username: newName
+        });
+        document.getElementById('welcomeUser').innerText = "👤 " + newName;
+        status.style.color = '#10b981';
+        status.innerText = "İsim başarıyla güncellendi!";
+        setTimeout(() => { status.innerText = ""; }, 3000);
+    }).catch((error) => {
+        status.style.color = '#ef4444';
+        status.innerText = "Hata: " + error.message;
+    });
+}
+
+function loadMemberCount() {
+    db.ref('users').on('value', (snapshot) => {
+        let count = snapshot.exists() ? snapshot.numChildren() : 0;
+        document.getElementById('totalMembersCount').innerText = count + " Üye";
+    });
+}
 
 function loginUser() {
     let email = document.getElementById('loginEmail').value.trim();
@@ -644,7 +799,6 @@ function loadUserListForAdmin() {
         });
         banList.innerHTML = "";
         for (let name in activeUsers) {
-            let uid = activeUsers[name];
             let div = document.createElement('div');
             div.className = 'ban-item';
             div.innerHTML = `
@@ -660,7 +814,7 @@ function loadUserListForAdmin() {
     });
 }
 
-/* Global Sohbet Fonksiyonları */
+/* Global Sohbet */
 function sendGlobalMessage() {
     let input = document.getElementById('globalChatInput');
     let text = input.value.trim();
@@ -721,7 +875,7 @@ function loadGlobalMessages() {
     });
 }
 
-/* Abone SS / Medya Fonksiyonları */
+/* Abone SS / Medya */
 function sendSSMessage() {
     let input = document.getElementById('ssChatInput');
     let text = input.value.trim();
