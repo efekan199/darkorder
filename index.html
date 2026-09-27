@@ -177,6 +177,22 @@ body {
 
 .btn-reg:hover { background: #2563eb; }
 
+.back-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.back-link a {
+    color: #8b9bb4;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.back-link a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
 #auth-status {
     font-size: 12px;
     text-align: center;
@@ -271,16 +287,17 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
             <div class="brand-subtitle">Hoşgeldiniz</div>
         </div>
 
-        <div class="form-box">
+        <!-- GİRİŞ FORMU -->
+        <div class="form-box" id="loginFormSection">
             <h2>Giriş Yap</h2>
             
             <div class="input-group">
-                <input type="email" id="email" placeholder="Email Adresi">
+                <input type="email" id="loginEmail" placeholder="Email Adresi">
             </div>
             
             <div class="input-group">
-                <input type="password" id="password" placeholder="Şifre">
-                <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+                <input type="password" id="loginPassword" placeholder="Şifre">
+                <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">👁️</button>
             </div>
             
             <div class="forgot-pass">
@@ -291,10 +308,40 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
                 <button class="btn-main" onclick="loginUser()">
                     <span>➔</span> Giriş Yap
                 </button>
-                <button class="btn-reg" onclick="registerUser()">Kayıt Ol</button>
+                <button class="btn-reg" onclick="showRegisterForm()">Kayıt Ol</button>
             </div>
 
             <p id="auth-status"></p>
+        </div>
+
+        <!-- KAYIT OL FORMU (Başlangıçta Gizli) -->
+        <div class="form-box" id="registerFormSection" style="display: none;">
+            <h2>Kayıt Ol</h2>
+            
+            <div class="input-group">
+                <input type="text" id="regUsername" placeholder="Kullanıcı Adı">
+            </div>
+
+            <div class="input-group">
+                <input type="email" id="regEmail" placeholder="Email Adresi">
+            </div>
+            
+            <div class="input-group">
+                <input type="password" id="regPassword" placeholder="Şifre (En az 6 karakter)">
+                <button type="button" class="toggle-password" onclick="togglePassword('regPassword')">👁️</button>
+            </div>
+
+            <div class="action-btns">
+                <button class="btn-main" onclick="registerUser()" style="background: #3b82f6;">
+                    Kayıt Ol ve Tamamla
+                </button>
+            </div>
+
+            <div class="back-link">
+                <a href="#" onclick="showLoginForm()">← Giriş Ekranına Dön</a>
+            </div>
+
+            <p id="reg-status"></p>
         </div>
     </div>
 </div>
@@ -356,19 +403,26 @@ try {
 
 const auth = firebase.auth();
 
-// Oturumun tarayıcı kapatıldığında/sekmeden çıkıldığında sıfırlanmasını sağlayan ayar
-auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
-    .catch((error) => {
-        console.error("Oturum kalıcılık hatası:", error);
-    });
+// Oturumun sekme kapandığında sıfırlanması için oturum modu
+auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {});
 
-function togglePassword() {
-    let passInput = document.getElementById('password');
+function togglePassword(fieldId) {
+    let passInput = document.getElementById(fieldId);
     if (passInput.type === "password") {
         passInput.type = "text";
     } else {
         passInput.type = "password";
     }
+}
+
+function showRegisterForm() {
+    document.getElementById('loginFormSection').style.display = 'none';
+    document.getElementById('registerFormSection').style.display = 'block';
+}
+
+function showLoginForm() {
+    document.getElementById('registerFormSection').style.display = 'none';
+    document.getElementById('loginFormSection').style.display = 'block';
 }
 
 auth.onAuthStateChanged((user) => {
@@ -378,7 +432,9 @@ auth.onAuthStateChanged((user) => {
     if (user) {
         authWrapper.style.display = 'none';
         mainContent.style.display = 'flex';
-        document.getElementById('welcomeUser').innerText = "👤 " + user.email;
+        // Kullanıcının varsa profil adını, yoksa e-postasını gösterelim
+        let displayName = user.displayName ? user.displayName : user.email;
+        document.getElementById('welcomeUser').innerText = "👤 " + displayName;
     } else {
         authWrapper.style.display = 'flex';
         mainContent.style.display = 'none';
@@ -386,8 +442,8 @@ auth.onAuthStateChanged((user) => {
 });
 
 function loginUser() {
-    let email = document.getElementById('email').value.trim();
-    let password = document.getElementById('password').value.trim();
+    let email = document.getElementById('loginEmail').value.trim();
+    let password = document.getElementById('loginPassword').value.trim();
     let status = document.getElementById('auth-status');
     
     if(!email || !password) {
@@ -411,13 +467,14 @@ function loginUser() {
 }
 
 function registerUser() {
-    let email = document.getElementById('email').value.trim();
-    let password = document.getElementById('password').value.trim();
-    let status = document.getElementById('auth-status');
+    let username = document.getElementById('regUsername').value.trim();
+    let email = document.getElementById('regEmail').value.trim();
+    let password = document.getElementById('regPassword').value.trim();
+    let status = document.getElementById('reg-status');
     
-    if(!email || !password) {
+    if(!username || !email || !password) {
         status.style.color = '#ef4444';
-        status.innerText = 'Lütfen e-posta ve şifrenizi girin!';
+        status.innerText = 'Lütfen tüm alanları doldurun!';
         return;
     }
     if(password.length < 6) {
@@ -430,9 +487,15 @@ function registerUser() {
     status.innerText = 'Hesap oluşturuluyor...';
 
     auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Kullanıcı adını Firebase profilimize kaydedelim
+            return userCredential.user.updateProfile({
+                displayName: username
+            });
+        })
         .then(() => {
             status.style.color = '#10b981';
-            status.innerText = 'Kayıt başarılı! Giriş yapılıyor...';
+            status.innerText = 'Kayıt başarılı! Yönlendiriliyorsunuz...';
         })
         .catch((error) => {
             status.style.color = '#ef4444';
@@ -441,7 +504,7 @@ function registerUser() {
 }
 
 function forgotPassword() {
-    let email = document.getElementById('email').value.trim();
+    let email = document.getElementById('loginEmail').value.trim();
     let status = document.getElementById('auth-status');
     
     if(!email) {
