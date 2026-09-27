@@ -110,9 +110,9 @@ p{font-size:12px;line-height:1.4;color:#ccc;margin:0}
 </div>
 
 <script>
-// Dark Order Proje Yapılandırması (Tam Eşleşme)
+// BURAYA FIREBASE'DEN KOPYALADIĞIN GERÇEK API KEY'İ YAPIŞTIR
 const firebaseConfig = {
-    apiKey: "AIzaSyC...", // Projendeki apiKey'i buraya yazabilirsin, veya aşağıdaki otomatik yönlendirme çalışacaktır.
+    apiKey: "BURAYA_GERCEK_API_KEY_DEGERINI_YAZ",
     authDomain: "dark-order-chat.firebaseapp.com",
     databaseURL: "https://dark-order-chat-default-rtdb.firebaseio.com/",
     projectId: "dark-order-chat",
@@ -121,7 +121,6 @@ const firebaseConfig = {
     appId: "1:306270242208:web:2972bd723bed53db4a50c5"
 };
 
-// Eğer apiKey alanında nokta yerine gerçek anahtarın olsun istersen, o sayfadaki config kodunu kopyalayıp buraya yapıştırman yeterlidir.
 try {
     firebase.initializeApp(firebaseConfig);
 } catch (e) {
@@ -237,5 +236,4 @@ function loadMessages() {
 
 </body>
 </html>
-
 
