@@ -20,7 +20,6 @@ body {
     margin: 0;
 }
 
-/* GİRİŞ EKRANI STİLLERİ */
 #authWrapper {
     display: flex;
     justify-content: center;
@@ -49,7 +48,6 @@ body {
     align-items: center;
 }
 
-/* Tavşan Logosu ve Başlık */
 .logo-area {
     text-align: center;
     margin-bottom: 25px;
@@ -59,7 +57,6 @@ body {
     width: 90px;
     height: 90px;
     object-fit: contain;
-    filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.4));
     margin-bottom: 10px;
 }
 
@@ -116,7 +113,6 @@ body {
     border-color: #3b82f6;
 }
 
-/* Şifre Gösterme İkonu */
 .toggle-password {
     position: absolute;
     right: 15px;
@@ -159,7 +155,6 @@ body {
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
-    transition: background 0.2s;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -177,7 +172,6 @@ body {
     font-weight: 600;
     font-size: 13px;
     cursor: pointer;
-    transition: background 0.2s;
 }
 
 .btn-reg:hover { background: #2563eb; }
@@ -187,9 +181,9 @@ body {
     text-align: center;
     margin-top: 15px;
     min-height: 18px;
+    word-break: break-all;
 }
 
-/* ANA KONTROL PANELİ STİLLERİ */
 #mainContent {
     display: none;
     flex-direction: column;
@@ -255,13 +249,9 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 </head>
 <body>
 
-<!-- GİRİŞ EKRANI (FOTOĞRAFKİ TARZDA) -->
 <div id="authWrapper">
     <div class="auth-container">
         <div class="logo-area">
-            <!-- Kanlı Tavşan İkonu / Görseli -->
-            <img src="https://api.iconify.design/game-icons:bloody-sword.svg?color=%23ef4444" class="rabbit-img" alt="Dark Order Logo" style="display:none;" id="fallbackLogo">
-            <!-- Gerçekçi Tavşan Maskot Görseli (Güvenilir Kaynak) -->
             <svg class="rabbit-img" viewBox="0 0 512 512" fill="#ef4444" xmlns="http://www.w3.org/2000/svg">
                 <path d="M256 32c-35.3 0-64 28.7-64 64 0 15.1 5.5 29 14.7 39.7C172.5 154.2 144 195.4 144 242.7c0 42.1 22.8 78.8 56.9 98.7-1.5 6.8-2.3 13.9-2.3 21.3 0 53 43 96 96 96s96-43 96-96c0-7.4-.8-14.5-2.3-21.3 34.1-19.9 56.9-56.6 56.9-98.7 0-47.3-28.5-88.5-68.7-107 9.2-10.7 14.7-24.6 14.7-39.7 0-35.3-28.7-64-64-64zm-32 48a32 32 0 1164 0 32 32 0 11-64 0zm96 224a24 24 0 110 48 24 24 0 110-48zm-128 0a24 24 0 110 48 24 24 0 110-48z" fill="#e0e0e0"/>
                 <path d="M256 352c-35.3 0-64 28.7-64 64s28.7 64 64 64 64-28.7 64-64-28.7-64-64-64zm0 32c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32z" fill="#ef4444"/>
@@ -298,7 +288,6 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     </div>
 </div>
 
-<!-- ANA KONTROL PANELİ -->
 <div id="mainContent">
     <div class="top-bar">
         <div class="user-badge" id="welcomeUser">Hoş geldin</div>
@@ -339,9 +328,11 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 </div>
 
 <script>
+// Gönderdiğin ekran görüntüsündeki orijinal Firebase bilgileri:
 const firebaseConfig = {
     apiKey: "AIzaSyAB-TgSqlPEMHYU3DQCdDC5eDxdpi7Dnr8",
     authDomain: "dark-order-chat.firebaseapp.com",
+    databaseURL: "https://dark-order-chat-default-rtdb.firebaseio.com",
     projectId: "dark-order-chat",
     storageBucket: "dark-order-chat.appspot.com",
     messagingSenderId: "306270242208",
@@ -355,7 +346,6 @@ try {
 
 const auth = firebase.auth();
 
-// Şifre Göster / Gizle
 function togglePassword() {
     let passInput = document.getElementById('password');
     if (passInput.type === "password") {
@@ -365,7 +355,6 @@ function togglePassword() {
     }
 }
 
-// Oturum Kontrolü
 auth.onAuthStateChanged((user) => {
     let authWrapper = document.getElementById('authWrapper');
     let mainContent = document.getElementById('mainContent');
@@ -380,7 +369,6 @@ auth.onAuthStateChanged((user) => {
     }
 });
 
-// Giriş Yap
 function loginUser() {
     let email = document.getElementById('email').value.trim();
     let password = document.getElementById('password').value.trim();
@@ -406,7 +394,6 @@ function loginUser() {
         });
 }
 
-// Kayıt Ol
 function registerUser() {
     let email = document.getElementById('email').value.trim();
     let password = document.getElementById('password').value.trim();
@@ -437,7 +424,6 @@ function registerUser() {
         });
 }
 
-// Şifremi Unuttum
 function forgotPassword() {
     let email = document.getElementById('email').value.trim();
     let status = document.getElementById('auth-status');
@@ -459,7 +445,6 @@ function forgotPassword() {
         });
 }
 
-// Çıkış Yap
 function logoutUser() {
     auth.signOut();
 }
