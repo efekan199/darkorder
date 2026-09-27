@@ -1,41 +1,464 @@
-import ollama
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Order - Giriş</title>
+<!-- Firebase Auth SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<style>
+* { box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: radial-gradient(circle at center, #1b2838 0%, #0b0f19 100%);
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
 
-# Dark Order Konsol Karşılama Ekranı
-print("=" * 50)
-print("       DARK ORDER AI ASİSTANI - LOKAL SİSTEM       ")
-print("=" * 50)
-print("[+] Durum: Bağımsız AI Modeli Aktif")
-print("[+] Discord Topluluk / Konsol Linki: https://discord.gg/darkorder")
-print("=" * 50)
+#authWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: radial-gradient(circle at center, #131c27 0%, #07090f 100%);
+    z-index: 9999;
+    padding: 20px;
+}
 
-def yapay_zeka_cevapla(kullanici_mesaji):
-    # Ollama üzerinden yerel olarak çalışan modelimize soruyu gönderiyoruz
-    # Hiçbir dış API anahtarı veya IP kısıtlaması yok!
-    response = ollama.chat(model='llama3', messages=[
-        {
-            'role': 'system',
-            'content': (
-                'Sen Dark Order ekibinden samimi, teknik bilgisi çok yüksek, '
-                'Türkçe konuşan, "kanka" diyen ve GoodbyeDPI, SMS bomber mantığı dahil '
-                'her türlü teknik veya günlük soruya net, kapsamlı cevaplar veren bir yapay zeka asistanısın.'
-            )
-        },
-        {
-            'role': 'user',
-            'content': kullanıcı_mesaji,
-        },
-    ])
-    
-    return response['message']['content']
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(18, 24, 38, 0.75);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 30px 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-# Test döngüsü ve Konsol Kullanımı
-if __name__ == "__main__":
-    print("\nAsistan hazır kanka, yazmaya başla (Çıkış için 'çıkış' yaz):\n")
-    while True:
-        mesaj = input("Sen: ")
-        if mesaj.lower() == "çıkış":
-            print("AI: Görüşürüz kanka, Dark Order'da görüşmek üzere!")
-            break
+.logo-area {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.rabbit-logo {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.6));
+    margin-bottom: 8px;
+}
+
+.brand-title {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.brand-subtitle {
+    color: #8b9bb4;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.form-box {
+    width: 100%;
+    background: rgba(13, 17, 26, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 25px 20px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.form-box h2 {
+    color: #ffffff;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.input-group input {
+    width: 100%;
+    background: #161f30;
+    border: 1px solid #23314a;
+    border-radius: 10px;
+    padding: 12px 15px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #3b82f6;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #8b9bb4;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.forgot-pass {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.forgot-pass a {
+    color: #3b82f6;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.forgot-pass a:hover {
+    text-decoration: underline;
+}
+
+.action-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-main {
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-main:hover { background: #059669; }
+
+.btn-reg {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.btn-reg:hover { background: #2563eb; }
+
+#auth-status {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 15px;
+    min-height: 18px;
+    word-break: break-all;
+}
+
+#mainContent {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.top-bar {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.user-badge {
+    background: rgba(22, 31, 48, 0.9);
+    border: 1px solid #23314a;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.logout-btn {
+    background: #ef4444;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.card {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(18, 24, 38, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    margin-top: 20px;
+}
+
+h1 { color: #fff; text-align: center; font-size: 18px; border-bottom: 2px solid #23314a; padding-bottom: 12px; margin-top: 0; }
+h2 { color: #3b82f6; font-size: 14px; margin: 0 0 6px 0; }
+p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
+.box { background: #161f30; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #3b82f6; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
+.tool { background: #101622; padding: 8px 10px; border-radius: 6px; font-size: 11px; border: 1px solid #23314a; color: #d0d8e8; }
+.btn-group { display: flex; gap: 10px; margin-top: 15px; }
+.btn { display: block; width: 100%; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; text-align: center; color: #fff; background: #3b82f6; }
+.btn.tiktok { background: #fe2857; }
+.btn:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<div id="authWrapper">
+    <div class="auth-container">
+        <div class="logo-area">
+            <svg class="rabbit-logo" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <path d="M190 40C160 80 150 140 160 200C120 180 80 190 70 240C60 290 100 330 140 330C130 290 150 250 180 230C190 280 220 320 256 340C292 320 322 280 332 230C362 250 382 290 372 330C412 330 452 290 442 240C432 190 392 180 352 200C362 140 352 80 322 40C290 70 270 90 256 120C242 90 222 70 190 40Z" fill="#d1d5db"/>
+                <path d="M210 75C195 110 190 150 195 190C210 170 225 140 235 110C225 95 218 85 210 75Z" fill="#ef4444"/>
+                <path d="M302 75C317 110 322 150 317 190C302 170 287 140 277 110C287 95 294 85 302 75Z" fill="#ef4444"/>
+                <ellipse cx="256" cy="250" rx="75" ry="65" fill="#e5e7eb"/>
+                <polygon points="220,230 245,220 235,245" fill="#ef4444"/>
+                <polygon points="292,230 267,220 277,245" fill="#ef4444"/>
+                <circle cx="233" cy="233" r="4" fill="#000"/>
+                <circle cx="279" cy="233" r="4" fill="#000"/>
+                <ellipse cx="256" cy="265" rx="12" ry="8" fill="#ef4444"/>
+                <path d="M246 273 C 246 295, 250 310, 252 325 C 254 310, 258 295, 258 273 Z" fill="#ef4444"/>
+                <path d="M230 270 C 225 285, 230 295, 235 305 C 238 290, 235 280, 240 270 Z" fill="#ef4444"/>
+                <path d="M282 270 C 287 285, 282 295, 277 305 C 274 290, 277 280, 272 270 Z" fill="#ef4444"/>
+            </svg>
+            <h1 class="brand-title">Dark Order</h1>
+            <div class="brand-subtitle">Hoşgeldiniz</div>
+        </div>
+
+        <div class="form-box">
+            <h2>Giriş Yap</h2>
             
-        cevap = yapay_zeka_cevapla(mesaj)
-        print(f"\nAI: {cevap}\n" + "-"*40)
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email Adresi">
+            </div>
+            
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Şifre">
+                <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+            </div>
+            
+            <div class="forgot-pass">
+                <a href="#" onclick="forgotPassword()">Şifremi Unuttum</a>
+            </div>
+
+            <div class="action-btns">
+                <button class="btn-main" onclick="loginUser()">
+                    <span>➔</span> Giriş Yap
+                </button>
+                <button class="btn-reg" onclick="registerUser()">Kayıt Ol</button>
+            </div>
+
+            <p id="auth-status"></p>
+        </div>
+    </div>
+</div>
+
+<div id="mainContent">
+    <div class="top-bar">
+        <div class="user-badge" id="welcomeUser">Hoş geldin</div>
+        <button class="logout-btn" onclick="logoutUser()">Çıkış Yap</button>
+    </div>
+
+    <div class="card">
+        <h1>Dark Order - Kontrol Paneli</h1>
+        <div class="box">
+            <h2>Sunucu Hakkında</h2>
+            <p>Sunucumuz kesinlikle sanala ve Discord'a yeni başlayan kişiler içindir. Burada sanala olarak verdiğimiz konular çok abartı değil; burada tanışır ve keyifli vakit geçiririz. Sizler için birkaç şey ekledik. Eğer büyütmek istiyorsanız elbet fırsatınız olacak... Sunucuya kişi çekmeniz bizi mutlu eder.</p>
+        </div>
+        <div class="box">
+            <h2>Kurallar</h2>
+            <p>Sunucuda <strong>ADK, MDK, DDK serbesttir</strong>. Şimdiden iyi eğlenceler!</p>
+        </div>
+        <div class="box">
+            <h2>Konular dan Araçlar</h2>
+            <div class="grid">
+                <div class="tool">📁 4d-soyad-sorgu</div>
+                <div class="tool">🤖 oto-tg-katilma</div>
+                <div class="tool">🌐 ilbar-at</div>
+                <div class="tool">🛡️ goodbyedpi-kurma</div>
+                <div class="tool">📧 t3mp-mail</div>
+                <div class="tool">📸 ısta-takipçi</div>
+                <div class="tool">🚀 s4nucu-sp7m</div>
+                <div class="tool">🔍 sherlock</div>
+                <div class="tool">💻 browse-stealer 😁</div>
+                <div class="tool">💥 sms-bomber</div>
+                <div class="tool">🆔 id-sorgu</div>
+            </div>
+        </div>
+        <div class="btn-group">
+            <a href="https://discord.gg/xMxtVGewJE" class="btn" target="_blank">Discord'a Katıl</a>
+            <a href="https://www.tiktok.com/@gg.darkorder?_r=1&_t=ZS-9A54uScfLk5" class="btn tiktok" target="_blank">TikTok'a Katıl</a>
+        </div>
+    </div>
+</div>
+
+<script>
+const firebaseConfig = {
+    apiKey: "AIzaSyAB-TgSqlPEmHYU3DQCdDC5eDxdpi7Dnr8",
+    authDomain: "dark-order-chat.firebaseapp.com",
+    databaseURL: "https://dark-order-chat-default-rtdb.firebaseio.com",
+    projectId: "dark-order-chat",
+    storageBucket: "dark-order-chat.appspot.com",
+    messagingSenderId: "306270242208",
+    appId: "1:306270242208:web:2972bd723bed53db4a50c5",
+    measurementId: "G-2GX79FCCSF"
+};
+
+try {
+    firebase.initializeApp(firebaseConfig);
+} catch (e) {}
+
+const auth = firebase.auth();
+
+function togglePassword() {
+    let passInput = document.getElementById('password');
+    if (passInput.type === "password") {
+        passInput.type = "text";
+    } else {
+        passInput.type = "password";
+    }
+}
+
+auth.onAuthStateChanged((user) => {
+    let authWrapper = document.getElementById('authWrapper');
+    let mainContent = document.getElementById('mainContent');
+    
+    if (user) {
+        authWrapper.style.display = 'none';
+        mainContent.style.display = 'flex';
+        document.getElementById('welcomeUser').innerText = "👤 " + user.email;
+    } else {
+        authWrapper.style.display = 'flex';
+        mainContent.style.display = 'none';
+    }
+});
+
+function loginUser() {
+    let email = document.getElementById('email').value.trim();
+    let password = document.getElementById('password').value.trim();
+    let status = document.getElementById('auth-status');
+    
+    if(!email || !password) {
+        status.style.color = '#ef4444';
+        status.innerText = 'Lütfen e-posta ve şifrenizi girin!';
+        return;
+    }
+
+    status.style.color = '#8b9bb4';
+    status.innerText = 'Giriş yapılıyor...';
+
+    auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+            status.style.color = '#10b981';
+            status.innerText = 'Giriş başarılı!';
+        })
+        .catch((error) => {
+            status.style.color = '#ef4444';
+            status.innerText = "Hata: " + error.message;
+        });
+}
+
+function registerUser() {
+    let email = document.getElementById('email').value.trim();
+    let password = document.getElementById('password').value.trim();
+    let status = document.getElementById('auth-status');
+    
+    if(!email || !password) {
+        status.style.color = '#ef4444';
+        status.innerText = 'Lütfen e-posta ve şifrenizi girin!';
+        return;
+    }
+    if(password.length < 6) {
+        status.style.color = '#ef4444';
+        status.innerText = 'Şifre en az 6 karakter olmalıdır!';
+        return;
+    }
+
+    status.style.color = '#8b9bb4';
+    status.innerText = 'Hesap oluşturuluyor...';
+
+    auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+            status.style.color = '#10b981';
+            status.innerText = 'Kayıt başarılı! Giriş yapılıyor...';
+        })
+        .catch((error) => {
+            status.style.color = '#ef4444';
+            status.innerText = "Hata: " + error.message;
+        });
+}
+
+function forgotPassword() {
+    let email = document.getElementById('email').value.trim();
+    let status = document.getElementById('auth-status');
+    
+    if(!email) {
+        status.style.color = '#ef4444';
+        status.innerText = 'Lütfen önce e-posta adresinizi yazın!';
+        return;
+    }
+
+    auth.sendPasswordResetEmail(email)
+        .then(() => {
+            status.style.color = '#10b981';
+            status.innerText = 'Şifre sıfırlama bağlantısı e-postanıza gönderildi!';
+        })
+        .catch((error) => {
+            status.style.color = '#ef4444';
+            status.innerText = "Hata: " + error.message;
+        });
+}
+
+function logoutUser() {
+    auth.signOut();
+}
+</script>
+
+</body>
+</html>
