@@ -50,19 +50,20 @@ body {
 
 .logo-area {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
-.rabbit-img {
-    width: 90px;
-    height: 90px;
+.rabbit-logo {
+    width: 100px;
+    height: 100px;
     object-fit: contain;
-    margin-bottom: 10px;
+    filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.6));
+    margin-bottom: 8px;
 }
 
 .brand-title {
     color: #ffffff;
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 700;
     margin: 0;
     letter-spacing: 0.5px;
@@ -252,9 +253,19 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 <div id="authWrapper">
     <div class="auth-container">
         <div class="logo-area">
-            <svg class="rabbit-img" viewBox="0 0 512 512" fill="#ef4444" xmlns="http://www.w3.org/2000/svg">
-                <path d="M256 32c-35.3 0-64 28.7-64 64 0 15.1 5.5 29 14.7 39.7C172.5 154.2 144 195.4 144 242.7c0 42.1 22.8 78.8 56.9 98.7-1.5 6.8-2.3 13.9-2.3 21.3 0 53 43 96 96 96s96-43 96-96c0-7.4-.8-14.5-2.3-21.3 34.1-19.9 56.9-56.6 56.9-98.7 0-47.3-28.5-88.5-68.7-107 9.2-10.7 14.7-24.6 14.7-39.7 0-35.3-28.7-64-64-64zm-32 48a32 32 0 1164 0 32 32 0 11-64 0zm96 224a24 24 0 110 48 24 24 0 110-48zm-128 0a24 24 0 110 48 24 24 0 110-48z" fill="#e0e0e0"/>
-                <path d="M256 352c-35.3 0-64 28.7-64 64s28.7 64 64 64 64-28.7 64-64-28.7-64-64-64zm0 32c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32z" fill="#ef4444"/>
+            <svg class="rabbit-logo" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <path d="M190 40C160 80 150 140 160 200C120 180 80 190 70 240C60 290 100 330 140 330C130 290 150 250 180 230C190 280 220 320 256 340C292 320 322 280 332 230C362 250 382 290 372 330C412 330 452 290 442 240C432 190 392 180 352 200C362 140 352 80 322 40C290 70 270 90 256 120C242 90 222 70 190 40Z" fill="#d1d5db"/>
+                <path d="M210 75C195 110 190 150 195 190C210 170 225 140 235 110C225 95 218 85 210 75Z" fill="#ef4444"/>
+                <path d="M302 75C317 110 322 150 317 190C302 170 287 140 277 110C287 95 294 85 302 75Z" fill="#ef4444"/>
+                <ellipse cx="256" cy="250" rx="75" ry="65" fill="#e5e7eb"/>
+                <polygon points="220,230 245,220 235,245" fill="#ef4444"/>
+                <polygon points="292,230 267,220 277,245" fill="#ef4444"/>
+                <circle cx="233" cy="233" r="4" fill="#000"/>
+                <circle cx="279" cy="233" r="4" fill="#000"/>
+                <ellipse cx="256" cy="265" rx="12" ry="8" fill="#ef4444"/>
+                <path d="M246 273 C 246 295, 250 310, 252 325 C 254 310, 258 295, 258 273 Z" fill="#ef4444"/>
+                <path d="M230 270 C 225 285, 230 295, 235 305 C 238 290, 235 280, 240 270 Z" fill="#ef4444"/>
+                <path d="M282 270 C 287 285, 282 295, 277 305 C 274 290, 277 280, 272 270 Z" fill="#ef4444"/>
             </svg>
             <h1 class="brand-title">Dark Order</h1>
             <div class="brand-subtitle">Hoşgeldiniz</div>
@@ -328,7 +339,6 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 </div>
 
 <script>
-// Gönderdiğin ekran görüntüsündeki orijinal Firebase bilgileri:
 const firebaseConfig = {
     apiKey: "AIzaSyAB-TgSqlPEMHYU3DQCdDC5eDxdpi7Dnr8",
     authDomain: "dark-order-chat.firebaseapp.com",
