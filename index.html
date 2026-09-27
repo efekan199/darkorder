@@ -1,79 +1,308 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dark Order</title>
-<!-- Firebase SDK'ları -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Order - Giriş</title>
+<!-- Firebase Auth SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <style>
-*{box-sizing:border-box}body{font-family:'Segoe UI',sans-serif;background:#121212;color:#e0e0e0;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;flex-direction:column}
+* { box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: radial-gradient(circle at center, #1b2838 0%, #0b0f19 100%);
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
 
-#authWrapper{display:flex;justify-content:center;align-items:center;width:100%;height:100vh;position:fixed;top:0;left:0;background:#121212;z-index:9999}
-#authBox{display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;max-width:380px;background:#1e1e1e;padding:25px;border-radius:12px;border:1px solid #333;box-shadow:0 10px 30px rgba(0,0,0,0.8);text-align:center;gap:12px}
-#authBox input{width:100%;background:#2b2d31;border:1px solid #3a3b40;border-radius:5px;padding:10px;color:#fff;font-size:13px;outline:none}
-#authBox button{background:#5865F2;color:#fff;border:none;padding:10px;border-radius:5px;font-weight:bold;cursor:pointer;font-size:13px;width:100%}
-#authBox button.reg-btn{background:#43b581}
+/* GİRİŞ EKRANI STİLLERİ */
+#authWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: radial-gradient(circle at center, #131c27 0%, #07090f 100%);
+    z-index: 9999;
+    padding: 20px;
+}
 
-.c-btn{position:fixed;top:20px;right:20px;background:#5865F2;color:#fff;padding:10px 16px;border-radius:8px;border:none;font-weight:600;font-size:13px;cursor:pointer;z-index:1000;box-shadow:0 4px 15px rgba(88,101,242,0.4)}
-.modal{display:none;position:fixed;top:70px;right:20px;width:300px;height:380px;background:#1e1e1e;border:1px solid #333;border-radius:10px;z-index:1001;flex-direction:column;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.8)}
-.m-head{background:#2b2d31;padding:10px;font-weight:bold;font-size:13px;color:#fff;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333}
-.m-head button{background:none;border:none;color:#aaa;font-size:14px;cursor:pointer}
-.m-msgs{flex:1;padding:10px;overflow-y:auto;font-size:12px;display:flex;flex-direction:column;gap:6px;color:#ccc}
-.msg{background:#25262b;padding:7px;border-radius:5px;border-left:3px solid #5865F2;word-break:break-word}
-.m-foot{display:flex;padding:8px;background:#181818;border-top:1px solid #333;gap:5px}
-.m-foot input{flex:1;background:#2b2d31;border:1px solid #3a3b40;border-radius:5px;padding:6px;color:#fff;font-size:12px;outline:none}
-.m-foot button{background:#5865F2;color:#fff;border:none;padding:0 10px;border-radius:5px;font-weight:bold;cursor:pointer;font-size:12px}
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(18, 24, 38, 0.75);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 30px 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-.card{width:100%;max-width:500px;background:#1e1e1e;border-radius:12px;padding:20px;border:1px solid #333;box-shadow:0 10px 30px rgba(0,0,0,0.8);margin-top:20px}
-h1{color:#fff;text-align:center;font-size:18px;border-bottom:2px solid #333;padding-bottom:10px;margin-top:0}
-h2{color:#5865F2;font-size:14px;margin:0 0 6px 0}
-p{font-size:12px;line-height:1.4;color:#ccc;margin:0}
-.box{background:#2b2d31;padding:12px;border-radius:8px;margin-bottom:10px;border-left:4px solid #5865F2}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
-.tool{background:#25262b;padding:7px 10px;border-radius:5px;font-size:11px;border:1px solid #3a3b40}
-.btn-group{display:flex;gap:10px;margin-top:15px}
-.btn{display:block;width:100%;text-decoration:none;padding:12px;border-radius:8px;font-weight:600;font-size:13px;text-align:center;color:#fff;background:#5865F2}
-.btn.tiktok{background:#fe2857}
-.btn:hover{opacity:0.9}
+/* Tavşan Logosu ve Başlık */
+.logo-area {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.rabbit-img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.4));
+    margin-bottom: 10px;
+}
+
+.brand-title {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.brand-subtitle {
+    color: #8b9bb4;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.form-box {
+    width: 100%;
+    background: rgba(13, 17, 26, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 25px 20px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.form-box h2 {
+    color: #ffffff;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.input-group input {
+    width: 100%;
+    background: #161f30;
+    border: 1px solid #23314a;
+    border-radius: 10px;
+    padding: 12px 15px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #3b82f6;
+}
+
+/* Şifre Gösterme İkonu */
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #8b9bb4;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.forgot-pass {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.forgot-pass a {
+    color: #3b82f6;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.forgot-pass a:hover {
+    text-decoration: underline;
+}
+
+.action-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-main {
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-main:hover { background: #059669; }
+
+.btn-reg {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-reg:hover { background: #2563eb; }
+
+#auth-status {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 15px;
+    min-height: 18px;
+}
+
+/* ANA KONTROL PANELİ STİLLERİ */
+#mainContent {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.top-bar {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.user-badge {
+    background: rgba(22, 31, 48, 0.9);
+    border: 1px solid #23314a;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.logout-btn {
+    background: #ef4444;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.card {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(18, 24, 38, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    margin-top: 20px;
+}
+
+h1 { color: #fff; text-align: center; font-size: 18px; border-bottom: 2px solid #23314a; padding-bottom: 12px; margin-top: 0; }
+h2 { color: #3b82f6; font-size: 14px; margin: 0 0 6px 0; }
+p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
+.box { background: #161f30; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #3b82f6; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
+.tool { background: #101622; padding: 8px 10px; border-radius: 6px; font-size: 11px; border: 1px solid #23314a; color: #d0d8e8; }
+.btn-group { display: flex; gap: 10px; margin-top: 15px; }
+.btn { display: block; width: 100%; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; text-align: center; color: #fff; background: #3b82f6; }
+.btn.tiktok { background: #fe2857; }
+.btn:hover { opacity: 0.9; }
 </style>
 </head>
 <body>
 
+<!-- GİRİŞ EKRANI (FOTOĞRAFKİ TARZDA) -->
 <div id="authWrapper">
-    <div id="authBox">
-        <h2 style="color:#fff; font-size:16px; margin-bottom:5px;">Dark Order - Giriş Yap</h2>
-        <p style="font-size:12px; color:#aaa;">Devam etmek için e-posta ve şifrenizi girin.</p>
-        <input type="email" id="email" placeholder="E-posta adresiniz">
-        <input type="password" id="password" placeholder="Şifreniz (En az 6 karakter)">
-        <button onclick="login()">Giriş Yap</button>
-        <button class="reg-btn" onclick="register()">Kayıt Ol</button>
-        <p id="auth-status" style="font-size:12px; margin-top:5px; min-height:18px;"></p>
+    <div class="auth-container">
+        <div class="logo-area">
+            <!-- Kanlı Tavşan İkonu / Görseli -->
+            <img src="https://api.iconify.design/game-icons:bloody-sword.svg?color=%23ef4444" class="rabbit-img" alt="Dark Order Logo" style="display:none;" id="fallbackLogo">
+            <!-- Gerçekçi Tavşan Maskot Görseli (Güvenilir Kaynak) -->
+            <svg class="rabbit-img" viewBox="0 0 512 512" fill="#ef4444" xmlns="http://www.w3.org/2000/svg">
+                <path d="M256 32c-35.3 0-64 28.7-64 64 0 15.1 5.5 29 14.7 39.7C172.5 154.2 144 195.4 144 242.7c0 42.1 22.8 78.8 56.9 98.7-1.5 6.8-2.3 13.9-2.3 21.3 0 53 43 96 96 96s96-43 96-96c0-7.4-.8-14.5-2.3-21.3 34.1-19.9 56.9-56.6 56.9-98.7 0-47.3-28.5-88.5-68.7-107 9.2-10.7 14.7-24.6 14.7-39.7 0-35.3-28.7-64-64-64zm-32 48a32 32 0 1164 0 32 32 0 11-64 0zm96 224a24 24 0 110 48 24 24 0 110-48zm-128 0a24 24 0 110 48 24 24 0 110-48z" fill="#e0e0e0"/>
+                <path d="M256 352c-35.3 0-64 28.7-64 64s28.7 64 64 64 64-28.7 64-64-28.7-64-64-64zm0 32c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32z" fill="#ef4444"/>
+            </svg>
+            <h1 class="brand-title">Dark Order</h1>
+            <div class="brand-subtitle">Hoşgeldiniz</div>
+        </div>
+
+        <div class="form-box">
+            <h2>Giriş Yap</h2>
+            
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email Adresi">
+            </div>
+            
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Şifre">
+                <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+            </div>
+            
+            <div class="forgot-pass">
+                <a href="#" onclick="forgotPassword()">Şifremi Unuttum</a>
+            </div>
+
+            <div class="action-btns">
+                <button class="btn-main" onclick="loginUser()">
+                    <span>➔</span> Giriş Yap
+                </button>
+                <button class="btn-reg" onclick="registerUser()">Kayıt Ol</button>
+            </div>
+
+            <p id="auth-status"></p>
+        </div>
     </div>
 </div>
 
-<div id="mainContent" style="display:none; flex-direction:column; align-items:center; width:100%; padding:20px;">
-    <button class="c-btn" onclick="tChat()">💬 Global Sohbet</button>
-
-    <div class="modal" id="cModal">
-        <div class="m-head">
-            <span id="chatUserTitle">Global Sohbet</span>
-            <div style="display:flex; align-items:center; gap:8px;">
-                <button onclick="logout()" style="color:#f04747; font-size:11px; font-weight:bold; background:none; border:none; cursor:pointer;">Çıkış</button>
-                <button onclick="tChat()">✕</button>
-            </div>
-        </div>
-        
-        <div style="display:flex; flex:1; flex-direction:column; overflow:hidden;">
-            <div class="m-msgs" id="cMsgs">
-                <div class="msg"><b>Sistem:</b> Sohbete hoş geldiniz!</div>
-            </div>
-            <div class="m-foot">
-                <input type="text" id="cInput" placeholder="Mesaj yaz..." onkeypress="if(event.key==='Enter')sMsg()">
-                <button onclick="sMsg()">Gönder</button>
-            </div>
-        </div>
+<!-- ANA KONTROL PANELİ -->
+<div id="mainContent">
+    <div class="top-bar">
+        <div class="user-badge" id="welcomeUser">Hoş geldin</div>
+        <button class="logout-btn" onclick="logoutUser()">Çıkış Yap</button>
     </div>
 
     <div class="card">
@@ -113,7 +342,6 @@ p{font-size:12px;line-height:1.4;color:#ccc;margin:0}
 const firebaseConfig = {
     apiKey: "AIzaSyAB-TgSqlPEMHYU3DQCdDC5eDxdpi7Dnr8",
     authDomain: "dark-order-chat.firebaseapp.com",
-    databaseURL: "https://dark-order-chat-default-rtdb.firebaseio.com/",
     projectId: "dark-order-chat",
     storageBucket: "dark-order-chat.appspot.com",
     messagingSenderId: "306270242208",
@@ -125,110 +353,115 @@ try {
     firebase.initializeApp(firebaseConfig);
 } catch (e) {}
 
-const db = firebase.database();
 const auth = firebase.auth();
 
-let messagesLoaded = false;
+// Şifre Göster / Gizle
+function togglePassword() {
+    let passInput = document.getElementById('password');
+    if (passInput.type === "password") {
+        passInput.type = "text";
+    } else {
+        passInput.type = "password";
+    }
+}
 
+// Oturum Kontrolü
 auth.onAuthStateChanged((user) => {
     let authWrapper = document.getElementById('authWrapper');
     let mainContent = document.getElementById('mainContent');
+    
     if (user) {
         authWrapper.style.display = 'none';
         mainContent.style.display = 'flex';
-        document.getElementById('chatUserTitle').innerText = "Sohbet (" + user.email + ")";
-        if (!messagesLoaded) {
-            loadMessages();
-            messagesLoaded = true;
-        }
+        document.getElementById('welcomeUser').innerText = "👤 " + user.email;
     } else {
         authWrapper.style.display = 'flex';
         mainContent.style.display = 'none';
     }
 });
 
-function register() {
+// Giriş Yap
+function loginUser() {
     let email = document.getElementById('email').value.trim();
     let password = document.getElementById('password').value.trim();
     let status = document.getElementById('auth-status');
     
     if(!email || !password) {
-        status.style.color = '#ff5555';
-        status.innerText = 'E-posta ve şifre boş olamaz!';
-        return;
-    }
-    if(password.length < 6) {
-        status.style.color = '#ff5555';
-        status.innerText = 'Şifre en az 6 karakter olmalıdır!';
+        status.style.color = '#ef4444';
+        status.innerText = 'Lütfen e-posta ve şifrenizi girin!';
         return;
     }
 
-    status.style.color = '#aaa';
-    status.innerText = 'Hesap oluşturuluyor...';
-
-    auth.createUserWithEmailAndPassword(email, password)
-        .then(() => {
-            status.style.color = '#43b581';
-            status.innerText = 'Kayıt başarılı!';
-        })
-        .catch((error) => {
-            status.style.color = '#ff5555';
-            status.innerText = "Hata: " + error.message;
-        });
-}
-
-function login() {
-    let email = document.getElementById('email').value.trim();
-    let password = document.getElementById('password').value.trim();
-    let status = document.getElementById('auth-status');
-    
-    if(!email || !password) {
-        status.style.color = '#ff5555';
-        status.innerText = 'E-posta ve şifre boş olamaz!';
-        return;
-    }
-
-    status.style.color = '#aaa';
+    status.style.color = '#8b9bb4';
     status.innerText = 'Giriş yapılıyor...';
 
     auth.signInWithEmailAndPassword(email, password)
         .then(() => {
-            status.style.color = '#43b581';
+            status.style.color = '#10b981';
             status.innerText = 'Giriş başarılı!';
         })
         .catch((error) => {
-            status.style.color = '#ff5555';
+            status.style.color = '#ef4444';
             status.innerText = "Hata: " + error.message;
         });
 }
 
-function logout() {
+// Kayıt Ol
+function registerUser() {
+    let email = document.getElementById('email').value.trim();
+    let password = document.getElementById('password').value.trim();
+    let status = document.getElementById('auth-status');
+    
+    if(!email || !password) {
+        status.style.color = '#ef4444';
+        status.innerText = 'Lütfen e-posta ve şifrenizi girin!';
+        return;
+    }
+    if(password.length < 6) {
+        status.style.color = '#ef4444';
+        status.innerText = 'Şifre en az 6 karakter olmalıdır!';
+        return;
+    }
+
+    status.style.color = '#8b9bb4';
+    status.innerText = 'Hesap oluşturuluyor...';
+
+    auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+            status.style.color = '#10b981';
+            status.innerText = 'Kayıt başarılı! Giriş yapılıyor...';
+        })
+        .catch((error) => {
+            status.style.color = '#ef4444';
+            status.innerText = "Hata: " + error.message;
+        });
+}
+
+// Şifremi Unuttum
+function forgotPassword() {
+    let email = document.getElementById('email').value.trim();
+    let status = document.getElementById('auth-status');
+    
+    if(!email) {
+        status.style.color = '#ef4444';
+        status.innerText = 'Lütfen önce e-posta adresinizi yazın!';
+        return;
+    }
+
+    auth.sendPasswordResetEmail(email)
+        .then(() => {
+            status.style.color = '#10b981';
+            status.innerText = 'Şifre sıfırlama bağlantısı e-postanıza gönderildi!';
+        })
+        .catch((error) => {
+            status.style.color = '#ef4444';
+            status.innerText = "Hata: " + error.message;
+        });
+}
+
+// Çıkış Yap
+function logoutUser() {
     auth.signOut();
-}
-
-function tChat(){
-    let m = document.getElementById('cModal');
-    m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
-}
-
-function sMsg(){
-    let i = document.getElementById('cInput');
-    let t = i.value.trim();
-    let user = auth.currentUser;
-    if(!t || !user) return;
-    db.ref('messages').push({name: user.email, text: t});
-    i.value = '';
-}
-
-function loadMessages() {
-    db.ref('messages').on('child_added', (snapshot)=>{
-        let data = snapshot.val();
-        let c = document.getElementById('cMsgs');
-        if(c && data) {
-            c.innerHTML += `<div class="msg"><b>${data.name}:</b> ${data.text.replace(/</g,"&lt;")}</div>`;
-            c.scrollTop = c.scrollHeight;
-        }
-    });
 }
 </script>
 
