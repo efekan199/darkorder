@@ -278,34 +278,10 @@ h2 { color: #3b82f6; font-size: 14px; margin: 0 0 6px 0; }
 p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 .box { background: #161f30; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #3b82f6; }
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
-.tool { background: #101622; padding: 8px 10px; border-radius: 6px; font-size: 11px; border: 1px solid #23314a; color: #d0d8e8; }
+.tool { background: #101622; padding: 8px 10px; border-radius: 6px; font-size: 11px; border: 1px solid #23314a; color: #d0d8e8; text-align: center; font-weight: 600; }
 .btn-group { display: flex; gap: 10px; margin-top: 15px; }
 .btn { display: block; width: 100%; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; text-align: center; color: #fff; background: #3b82f6; }
 .btn.tiktok { background: #fe2857; }
-
-/* Sekme Geçiş Butonları */
-.section-tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-.tab-btn {
-    flex: 1;
-    background: #101622;
-    border: 1px solid #23314a;
-    color: #8b9bb4;
-    padding: 10px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 13px;
-    text-align: center;
-}
-.tab-btn.active {
-    background: #3b82f6;
-    color: #fff;
-    border-color: #3b82f6;
-}
 
 /* Sohbet Alanı */
 .chat-box-container {
@@ -316,7 +292,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 }
 
 .chat-messages {
-    height: 220px;
+    height: 250px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -340,10 +316,18 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     border-color: #ef4444;
 }
 
+.chat-message img, .chat-message video {
+    max-width: 100%;
+    border-radius: 6px;
+    margin-top: 5px;
+    display: block;
+}
+
 .chat-input-area {
     display: flex;
     gap: 6px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .chat-input-area input[type="text"] {
@@ -355,6 +339,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     color: #fff;
     font-size: 12px;
     outline: none;
+    min-width: 120px;
 }
 
 .chat-input-area button.send-btn {
@@ -362,7 +347,7 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     color: white;
     border: none;
     border-radius: 6px;
-    padding: 8px 14px;
+    padding: 8px 12px;
     font-weight: 600;
     font-size: 12px;
     cursor: pointer;
@@ -373,11 +358,22 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
     color: white;
     border: none;
     border-radius: 6px;
-    padding: 8px 10px;
+    padding: 8px 8px;
     font-weight: 600;
     font-size: 11px;
     cursor: pointer;
     display: none;
+}
+
+.media-upload-btn {
+    background: #8b5cf6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-weight: 600;
+    font-size: 11px;
+    cursor: pointer;
 }
 </style>
 </head>
@@ -454,21 +450,48 @@ p { font-size: 12px; line-height: 1.5; color: #b0c0d0; margin: 0; }
 
     <div class="card">
         <h1>Dark Order - Kontrol Paneli</h1>
+        
         <div class="box">
-            <h2>Sunucu & Bot Duyuruları</h2>
-            <p>Sunucumuz sanala ve Discord'a yeni başlayanlar içindir. Discord botlarımız ve duyurularımız için resmi sunucumuza katılmayı unutmayın!</p>
+            <h2>Sunucu Hakkında</h2>
+            <p>Sunucumuz kesinlikle sanala ve Discord'a yeni başlayan kişiler içindir. Burada sanala olarak verdiğimiz konular çok abartı değil; burada tanışır ve keyifli vakit geçiririz. Sizler için birkaç şey ekledik. Eğer büyütmek istiyorsanız elbet fırsatınız olacak... Sunucuya kişi çekmeniz bizi mutlu eder.</p>
         </div>
+
         <div class="box">
             <h2>Kurallar</h2>
             <p>Sunucuda <strong>ADK, MDK, DDK serbesttir</strong>. Şimdiden iyi eğlenceler!</p>
         </div>
-        
+
+        <!-- KONULAR VE ARAÇLAR -->
         <div class="box">
-            <h2>Global Sohbet Odası</h2>
+            <h2>Konular ve Araçlar</h2>
+            <div class="grid">
+                <div class="tool">📁 4d-soyad-sorgu</div>
+                <div class="tool">🤖 oto-tg-katilma</div>
+                <div class="tool">🌐 ilbar-at</div>
+                <div class="tool">🛡️ goodbyedpi-kurma</div>
+                <div class="tool">📧 t3mp-mail</div>
+                <div class="tool">📊 ista-takipçi</div>
+                <div class="tool">🚀 s4nucu-sp7m</div>
+                <div class="tool">🔍 sherlock</div>
+                <div class="tool">💻 browse-stealer 😋</div>
+                <div class="tool">💥 sms-bomber</div>
+                <div class="tool" style="grid-column: span 2;">🆔 id-sorgu</div>
+            </div>
+        </div>
+        
+        <!-- GLOBAL SOHBET VE ABONE SS -->
+        <div class="box">
+            <h2>Global Sohbet Odası & Abone SS</h2>
+            <p style="font-size: 11px; color: #8b9bb4; margin-bottom: 8px;">Aşağıdan mesaj yazabilir veya Abone SS / Fotoğraf / Video yükleyebilirsin.</p>
             <div class="chat-box-container">
                 <div class="chat-messages" id="chatMessages"></div>
+                
+                <!-- Gizli dosya seçici -->
+                <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display: none;" onchange="handleMediaUpload(event)">
+
                 <div class="chat-input-area">
                     <button class="everyone-btn" id="everyoneBtn" onclick="sendEveryoneMessage()">@everyone</button>
+                    <button class="media-upload-btn" onclick="document.getElementById('mediaFileInput').click()">📸 Medya / SS At</button>
                     <input type="text" id="chatInput" placeholder="Mesaj yaz..." onkeypress="checkEnter(event)">
                     <button class="send-btn" onclick="sendMessage()">Gönder</button>
                 </div>
@@ -661,6 +684,29 @@ function sendEveryoneMessage() {
     input.value = "";
 }
 
+function handleMediaUpload(event) {
+    let file = event.target.files[0];
+    let user = auth.currentUser;
+    if (!file || !user) return;
+
+    let reader = new FileReader();
+    reader.onload = function(e) {
+        let base64Data = e.target.result;
+        let displayName = user.displayName ? user.displayName : user.email.split('@')[0];
+        let isVideo = file.type.startsWith('video');
+
+        db.ref('chat').push({
+            uid: user.uid,
+            user: displayName + " (Abone SS/Medya)",
+            mediaUrl: base64Data,
+            mediaType: isVideo ? 'video' : 'image',
+            type: "media"
+        });
+    };
+    reader.readAsDataURL(file);
+    event.target.value = ""; // Sıfırla
+}
+
 function checkEnter(event) {
     if (event.key === "Enter") sendMessage();
 }
@@ -676,6 +722,12 @@ function loadMessages() {
             if (data.type === "everyone") {
                 msgDiv.className = "chat-message everyone-msg";
                 msgDiv.innerHTML = `<b>🔔 ${data.user}:</b> <span style="color:#f87171; font-weight:bold;">${data.text}</span>`;
+            } else if (data.type === "media") {
+                msgDiv.className = "chat-message";
+                let mediaTag = data.mediaType === 'video' 
+                    ? `<video controls src="${data.mediaUrl}"></video>` 
+                    : `<img src="${data.mediaUrl}" alt="Abone SS / Medya">`;
+                msgDiv.innerHTML = `<b>📷 ${data.user}:</b><br>${mediaTag}`;
             } else {
                 msgDiv.className = "chat-message";
                 msgDiv.innerHTML = `<b>${data.user}:</b> ${data.text}`;
